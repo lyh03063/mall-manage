@@ -31,8 +31,18 @@
                 <i class="el-icon-menu"></i>
                 <span>产品中心</span>
               </template>
-              <el-menu-item index="listProduct" route="/listProduct">产品列表</el-menu-item>
+              <el-menu-item index="listCommodity" route="/listCommodity">商品列表</el-menu-item>
               <el-menu-item index="listCategory" route="/listCategory">产品分类</el-menu-item>
+         
+            </el-submenu>
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>会员/订单</span>
+              </template>
+              <el-menu-item index="listOrder" route="/listOrder">订单列表</el-menu-item>
+              <el-menu-item index="listMember" route="/listMember">会员列表</el-menu-item>
+             
             </el-submenu>
           </el-menu>
         </el-aside>

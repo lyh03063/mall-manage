@@ -5,13 +5,15 @@ import space from './components/space/index.js';   //默认情况下找的是ind
 Vue.use(space);   //必须有install
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
-import listCategory from "./page/list-category";
-import listProduct from "./page/list-product";
-import listHome from "./page/list-home";
+
+
 import login from "./login";
 import manage from "./manage";
-
-
+import listHome from "./page/listHome";
+import listCategory from "./page/listCategory";
+import listCommodity from "./page/listCommodity";
+import listMember from "./page/listMember";
+import listOrder from "./page/listOrder";
 
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -30,12 +32,20 @@ const router = new VueRouter({
           component: listHome
         },
         {
-          path: '/listProduct',
-          component: listProduct
+          path: '/listCommodity',
+          component: listCommodity
         },
         {
           path: '/listCategory',
           component: listCategory
+        },
+        {
+          path: '/listMember',
+          component: listMember
+        },
+        {
+          path: '/listOrder',
+          component: listOrder
         }
       ]
     },
