@@ -2,12 +2,17 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
+
       <el-breadcrumb-item>商品中心</el-breadcrumb-item>
       <el-breadcrumb-item>{{cf.title}}</el-breadcrumb-item>
+    <el-breadcrumb-item>{{cf.twoTitle}}</el-breadcrumb-item>
+      <el-breadcrumb-item>{{cf.threeTitle}}</el-breadcrumb-item>
+
     </el-breadcrumb>
     <space height="8"></space>
     <el-row>
-      <el-button type="primary" size="small" @click="$store.commit('openDialogAdd',cf.listIndex)">新增</el-button>
+      <el-button v-if="cf.flag" type="primary" size="small" @click="$store.commit('openDialogAdd',cf.listIndex)">新增</el-button>
+      <space v-else height="32"></space>
     </el-row>
     <space height="10"></space>
 
