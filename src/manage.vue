@@ -3,7 +3,7 @@
     <el-container>
       <el-header class="MB10">
         <el-row>
-          <div class="FL MT13 FS24 C_fff">网站管理后台</div>
+          <div class="FL MT13 FS24 C_fff">管理后台</div>
 
           <div class="FR MT30 C_fff">
             <span class="MR10">当前登录用户 admin</span>
@@ -29,10 +29,10 @@
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>产品中心</span>
+                <span>商品中心</span>
               </template>
               <el-menu-item index="listCommodity" route="/listCommodity">商品列表</el-menu-item>
-              <el-menu-item index="listCategory" route="/listCategory">产品分类</el-menu-item>
+              <el-menu-item index="listCategory" route="/listCategory">商品分类</el-menu-item>
          
             </el-submenu>
             <el-submenu index="2">
@@ -54,7 +54,9 @@
       </el-container>
     </el-container>
   </div>
+  
 </template>
+
 <script>
 import Vue from "vue";
 
@@ -75,6 +77,7 @@ export default {
       //当前激活的菜单index
       return this.$store.state.activeMenuIndex; //从vuex的store里面读取值
     }
+    
   },
   data() {
     return {
