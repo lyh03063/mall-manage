@@ -13,12 +13,12 @@ export default {
     return {
       cfList: {
         listIndex:"listCategory",//vuex对应的字段
-        title: "分类列表",
+        title: "商品分类",
         url: {
-          list: "http://120.76.160.41:3000/crossGetList?page=category",//列表接口
-          add: "http://120.76.160.41:3000/crossAdd?page=category",//新增接口
-          modify: "http://120.76.160.41:3000/crossModify?page=category",//修改接口
-          delete: "http://120.76.160.41:3000/crossDelete?page=category"//删除接口
+          list: "http://120.76.160.41:3000/crossList?page=mabang-category",//列表接口
+          add: "http://120.76.160.41:3000/crossAdd?page=mabang-category",//新增接口
+          modify: "http://120.76.160.41:3000/crossModify?page=mabang-category",//修改接口
+          delete: "http://120.76.160.41:3000/crossDelete?page=mabang-category"//删除接口
         },
        //-------列配置数组-------
         columns: [
@@ -31,7 +31,13 @@ export default {
             label: "分类名称",
             prop: "name",
             width: 200
+          },
+           {
+            label: "注释",
+            prop: "description",
+             width: 200
           }
+          
         ],
          //-------筛选表单字段数组-------
         searchFormItems: [
@@ -53,11 +59,12 @@ export default {
           },
           {
             label: "注释",
-            prop: "remark",
+            prop: "description",
           }
         ],
         //-------新增、修改表单字段数组-------
         formItems: [
+          
           {
             label: "分类名称",
             prop: "name",
@@ -65,9 +72,11 @@ export default {
           },
           {
             label: "注释",
-            prop: "remark",
+            prop: "description",
             type: "textarea"
           },
+
+
         ],
        
       }

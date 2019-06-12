@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>产品中心</el-breadcrumb-item>
+      <el-breadcrumb-item>商品中心</el-breadcrumb-item>
       <el-breadcrumb-item>{{cf.title}}</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="8"></space>
@@ -21,10 +21,8 @@
       :cell-style="{padding:'3px'}"
       :header-cell-style="{padding:'6px'}"
       style="width: 100%"
-     >
-      <el-table-column label="id" prop="P1" :width="60" type="selection">
-        
-      </el-table-column>
+    >
+      <el-table-column label="id" prop="P1" :width="60" type="selection"></el-table-column>
       <el-table-column
         :prop="column.prop"
         :label="column.label"
@@ -131,6 +129,7 @@ export default {
     searchList() {
       // alert("searchList");
       this.getProList(); //第一次加载此函数，页面才不会空
+      
     },
 
     //-------------处理分页变动函数--------------
@@ -174,7 +173,7 @@ export default {
       Objparma: {
         brandMuti: [],
         pageIndex: 1, //第1页
-        pageSize: 10 //每页10条
+        pageSize: 10, //每页10条
       },
 
       tableData: [] //列表数据
