@@ -24,7 +24,6 @@
       :cell-style="{padding:'3px'}"
       :header-cell-style="{padding:'6px'}"
       style="width: 100%"
-      
     >
       <el-table-column label="id" prop="P1" :width="60" type="selection"  ></el-table-column>
       <el-table-column
@@ -149,7 +148,9 @@ export default {
         data: {
            findJson: {
                 //用于定位要修改的数据
-                P1: this.Objparma.P1
+                P1: this.Objparma.P1,
+                name:this.Objparma.name,
+                 category:this.Objparma.category,
               }
 
         } //传递参数
@@ -183,7 +184,6 @@ export default {
         brandMuti: [],
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
-        P1:""
       },
 
       tableData: [] //列表数据
