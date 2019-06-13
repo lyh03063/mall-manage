@@ -33,7 +33,6 @@
         v-for="column in cf.columns"
         :key="column.prop"
         :formatter="column.formatter"
-        :title="myTitle"
       ></el-table-column>
 
       <el-table-column label="操作" width>
@@ -150,7 +149,6 @@ export default {
            findJson: {
                 //用于定位要修改的数据
                 P1: this.Objparma.P1,
-                name:this.Objparma.name
               }
 
         } //传递参数
