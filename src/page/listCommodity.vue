@@ -12,6 +12,7 @@ export default {
       cfList: {
         listIndex: "listProduct", //vuex对应的字段
         title: "商品列表",
+        flag:true,
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-commodity", //列表接口
           add: "http://120.76.160.41:3000/crossAdd?page=mabang-commodity", //新增接口
@@ -23,7 +24,7 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 100
+            width: 100,
           },
           {
             label: "商品名称",
@@ -31,7 +32,7 @@ export default {
             width: 100,
             formatter(row, column) {
               //格式器
-              return `产品：${row.name}`;
+              return `商品：${row.name}`;
             }
           },
           {
@@ -64,20 +65,15 @@ export default {
             prop: "category",
             width: 100
           }
+
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
           {
-            
-            
-            findJson: {
-              prop: "P1", 
-              type: "input",
-              label: "商品编号"
-
-            },
-           
-          }
+            label: "商品id",
+            prop: "porId",
+            type: "input"
+          },
 
           // {
           //   label: "系统类型",
@@ -104,7 +100,7 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 100
+            width: 100,
           },
           {
             label: "商品名称",
