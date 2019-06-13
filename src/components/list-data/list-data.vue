@@ -131,7 +131,7 @@ export default {
     },
     //-------------查询列表的函数--------------
     searchList() {
-      // alert("searchList");
+     
       this.getProList(); //第一次加载此函数，页面才不会空
     },
 
@@ -146,7 +146,13 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: this.Objparma //传递参数
+        data: {
+           findJson: {
+                //用于定位要修改的数据
+                P1: this.Objparma.P1
+              }
+
+        } //传递参数
       })
         .then(response => {
           console.log("第一次请求结果", response.data);
@@ -177,6 +183,7 @@ export default {
         brandMuti: [],
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
+        P1:""
       },
 
       tableData: [] //列表数据
