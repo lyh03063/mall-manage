@@ -118,6 +118,7 @@ export default {
       //当前订单
       this.tableData = this.row.order;
       this.status = this.row.order.status;
+      alert(this.status);
       //alert(JSON.stringify(this.row.order.status))
 
       for (

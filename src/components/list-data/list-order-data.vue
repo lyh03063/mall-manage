@@ -150,7 +150,6 @@ export default {
       // alert("searchList");
       this.getProList(); //第一次加载此函数，页面才不会空
     },
-
     //-------------处理分页变动函数--------------
     handleCurrentChange(pageIndex) {
       this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
@@ -175,21 +174,27 @@ export default {
           this.page = page;
           this.allCount = page.allCount; //更改总数据量
 
-          var shopIndex = 0;
+          var i = 0;
           //第一重循环订单列表
-          for (let i = 0; i < this.tableData.length; i++) {
+          for (let index = 0; index < this.tableData.length; index++) {
             //第二重循环订单列表中的商品列表
-            for (
-              let j = 0;
-              j < this.tableData[shopIndex].commodityList.length;
-              j++
-            ) {
-              //判断状态,给对应的状态重新赋值回显
-              if (this.tableData[shopIndex].status == 1) {
-                this.tableData[shopIndex].state = "已下单,未付款";
-              }
+            for ( let j = 0;j < this.tableData[i].commodityList.length; j++) {               
             }
-            shopIndex++;
+            //判断状态,给对应的状态重新赋值回显
+              if (this.tableData[i].status == 1) {
+                this.tableData[i].state = "已下单,未付款";
+              }else if(this.tableData[i].status == 2){
+                this.tableData[i].state = "已付款,未发货";
+              }else if(this.tableData[i].status == 3){
+                this.tableData[i].state = "已发货";
+              }else if(this.tableData[i].status == 4){
+                this.tableData[i].state = "已完成";
+              }else if(this.tableData[i].status == 5){
+                this.tableData[i].state = "已取消";
+              }else{
+                this.tableData[i].state = "未知状态";
+              }
+            i++;
           }
         })
         .catch(function(error) {
