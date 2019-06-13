@@ -70,12 +70,12 @@ export default {
         searchFormItems: [
           {
             label: "商品id",
-            prop: "porId",
+            prop: "P1",
             type: "input"
           },
           {
             label: "商品名称",
-            prop: "system",
+            prop: "name",
             type: "input"
           },
           {

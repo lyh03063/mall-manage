@@ -149,7 +149,8 @@ export default {
         data: {
            findJson: {
                 //用于定位要修改的数据
-                P1: this.Objparma.P1
+                P1: this.Objparma.P1,
+                name:this.Objparma.name
               }
 
         } //传递参数
@@ -183,7 +184,6 @@ export default {
         brandMuti: [],
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
-        P1:""
       },
 
       tableData: [] //列表数据
