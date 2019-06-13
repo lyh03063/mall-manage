@@ -12,7 +12,7 @@ export default {
       cfList: {
         listIndex: "listProduct", //vuex对应的字段
         title: "商品列表",
-        flag:true,
+        flag: true,
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-commodity", //列表接口
           add: "http://120.76.160.41:3000/crossAdd?page=mabang-commodity", //新增接口
@@ -29,16 +29,11 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            width: 100,
-            formatter(row, column) {
-              //格式器
-              return `商品：${row.name}`;
-            }
-          },
-          {
-            label: "商品简介",
-            prop: "description",
             width: 100
+            // formatter(row, column) {
+            //   //格式器
+            //   return `商品：${row.name}`;
+            // }
           },
           {
             label: "商品详情",
@@ -64,8 +59,12 @@ export default {
             label: "分类编号",
             prop: "category",
             width: 100
+          },
+          {
+            label: "图片",
+            prop: "album",
+            width: 100
           }
-
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
@@ -74,7 +73,16 @@ export default {
             prop: "porId",
             type: "input"
           },
-
+          {
+            label: "商品名称",
+            prop: "system",
+            type: "input"
+          },
+          {
+            label: "分类编号",
+            prop: "category",
+            type: "input"
+          }
           // {
           //   label: "系统类型",
           //   prop: "system",
@@ -100,16 +108,12 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 100,
+            width: 100
           },
           {
             label: "商品名称",
             prop: "name",
-            width: 100,
-            formatter(row, column) {
-              //格式器
-              return `产品：${row.name}`;
-            }
+            width: 100
           },
           {
             label: "商品简介",
@@ -139,6 +143,11 @@ export default {
           {
             label: "分类编号",
             prop: "category",
+            width: 100
+          },
+          {
+            label: "图片",
+            prop: "album",
             width: 100
           }
         ],
@@ -172,6 +181,11 @@ export default {
           {
             label: "库存",
             prop: "store",
+            type: "input"
+          },
+          {
+            label: "图片",
+            prop: "album",
             type: "input"
           }
         ]
