@@ -14,15 +14,15 @@
         @click="$store.commit('openDialogAdd',cf.listIndex)"
       >新增</el-button>
       <space height="32" v-else></space>
-      
-
     </el-row>
     <space height="10"></space>
 
     <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma"></dynamicForm>
-<div><h1>{{cf.threeTitle}}</h1></div>
-<space height="12" ></space>
     
+    <div>
+      <h1>{{cf.threeTitle}}</h1>
+    </div>
+    <space height="12"></space>
 
     <!--主列表-->
     <el-table
@@ -50,7 +50,7 @@
 
           <router-link to="/listnewpage" icon="el-icon-notebook-2">
             <el-button
-             title="订单详情"
+              title="订单详情"
               index="listnewpage"
               route="/listnewpage"
               icon="el-icon-notebook-2"
@@ -162,7 +162,11 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: this.Objparma //传递参数
+        data:{
+          findJson:{
+            P1: this.Objparma.P1
+          }
+        } //传递参数
       })
         .then(response => {
           console.log("第一次请求结果", response.data);
@@ -175,24 +179,25 @@ export default {
           //第一重循环订单列表
           for (let i = 0; i < this.tableData.length; i++) {
             //第二重循环订单列表中的商品列表
-            for (let j = 0;j < this.tableData[shopIndex].commodityList.length;j++ ) {
+            for (
+              let j = 0;
+              j < this.tableData[shopIndex].commodityList.length;
+              j++
+            ) {
               //判断状态,给对应的状态重新赋值回显
               if (this.tableData[shopIndex].status == 1) {
-                this.tableData[shopIndex].state = "已下单,未付款";                                            
+                this.tableData[shopIndex].state = "已下单,未付款";
               }
-              
             }
             shopIndex++;
           }
-
-
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
     },
-    getData(order){
-     this.cf.order=order;
+    getData(order) {
+      this.cf.order = order;
       this.$store.commit("listnewOrder", this.cf);
     }
   },
@@ -212,7 +217,8 @@ export default {
       Objparma: {
         brandMuti: [],
         pageIndex: 1, //第1页
-        pageSize: 10 //每页10条
+        pageSize: 10, //每页10条
+        P1:""
       },
 
       tableData: [] //列表数据
@@ -244,10 +250,10 @@ export default {
     //等待模板加载后，
     this.getProList(); //第一次加载此函数，页面才不会空
   },
- filters: {
+  filters: {
     //过滤器
     //时间戳转日期
-   formatDate(date) {
+    formatDate(date) {
       var dateee = new Date(date).toJSON();
       return new Date(+new Date(dateee) + 8 * 3600 * 1000)
         .toISOString()
