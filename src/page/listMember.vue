@@ -26,7 +26,7 @@ export default {
        //-------列配置数组-------
         columns: [
           {
-            label: "会员编号",
+            label: "会员编号111",
             prop: "P1",
             width: 100
           },
