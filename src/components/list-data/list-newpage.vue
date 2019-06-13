@@ -38,7 +38,7 @@
         :width="order.width"
       ></el-table-column>
       <el-table-column label="操作" width>
-        <el-button
+        <!-- <el-button
           title="编辑"
           icon="el-icon-edit"
           size="mini"
@@ -51,7 +51,7 @@
           size="mini"
           circle
           @click="confirmDelete(scope.row.P1)"
-        ></el-button>
+        ></el-button> -->
       </el-table-column>
     </el-table>
     <!------------------------------分页--------------------------------------->
@@ -85,6 +85,9 @@
       <space height="8"></space>
       <el-button type="primary" style="float:right" v-if="status==2" @click="updatePrlList(3)">发货</el-button>
       <el-button type="success" style="float:right" v-if="status==3" @click="updatePrlList(4)">完成订单</el-button>
+      <!-- <el-button type="success" style="float:right" @click="activated">测试</el-button> -->
+      <!-- {{allCount}} -->
+
 
     </div>
   </div>
@@ -167,6 +170,7 @@ export default {
           if(code == 0 ){
             if (condition == 3) {
               alert("订单发货成功");
+              
             }else{
               alert("订单已完成")
             }
@@ -186,8 +190,9 @@ export default {
       return this.$store.state.obj;
     }
   },
-  activated: function() {
+  activated() {
     this.getProList();
+    
   },
   filters: {
     //过滤器

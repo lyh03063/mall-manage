@@ -58,7 +58,7 @@
             ></el-button>
           </router-link>
 
-          <el-button
+          <!-- <el-button
             title="编辑"
             icon="el-icon-edit"
             size="mini"
@@ -71,7 +71,7 @@
             size="mini"
             circle
             @click="confirmDelete(scope.row.P1)"
-          ></el-button>
+          ></el-button> -->
         </template>
       </el-table-column>
     </el-table>
