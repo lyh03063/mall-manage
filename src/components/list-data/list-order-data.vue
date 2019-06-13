@@ -18,7 +18,7 @@
     <space height="10"></space>
 
     <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma"></dynamicForm>
-    
+
     <div>
       <h1>{{cf.threeTitle}}</h1>
     </div>
@@ -45,10 +45,8 @@
 
       <el-table-column label="操作" width>
         <template slot-scope="scope">
-          <!--  -->
-          <!-- <router-link to="/listnewpage">{{cf.orderTitle}}</router-link> -->
-
-          <router-link to="/listnewpage" icon="el-icon-notebook-2">
+        
+          <router-link to="/listnewpage" >
             <el-button
               title="订单详情"
               index="listnewpage"
@@ -88,6 +86,7 @@
     <listDialogs ref="listDialogs" :cf="cf">
       <!--列表用到的各种弹窗-->
     </listDialogs>
+    
   </div>
 </template>
 <script>
@@ -161,8 +160,8 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data:{
-          findJson:{
+        data: {
+          findJson: {
             P1: this.Objparma.P1
           }
         } //传递参数
@@ -178,22 +177,21 @@ export default {
           //第一重循环订单列表
           for (let index = 0; index < this.tableData.length; index++) {
             //第二重循环订单列表中的商品列表
-            for ( let j = 0;j < this.tableData[i].commodityList.length; j++) {               
-            }
+            for (let j = 0; j < this.tableData[i].commodityList.length; j++) {}
             //判断状态,给对应的状态重新赋值回显
-              if (this.tableData[i].status == 1) {
-                this.tableData[i].state = "已下单,未付款";
-              }else if(this.tableData[i].status == 2){
-                this.tableData[i].state = "已付款,未发货";
-              }else if(this.tableData[i].status == 3){
-                this.tableData[i].state = "已发货";
-              }else if(this.tableData[i].status == 4){
-                this.tableData[i].state = "已完成";
-              }else if(this.tableData[i].status == 5){
-                this.tableData[i].state = "已取消";
-              }else{
-                this.tableData[i].state = "未知状态";
-              }
+            if (this.tableData[i].status == 1) {
+              this.tableData[i].state = "已下单,未付款";
+            } else if (this.tableData[i].status == 2) {
+              this.tableData[i].state = "已付款,未发货";
+            } else if (this.tableData[i].status == 3) {
+              this.tableData[i].state = "已发货";
+            } else if (this.tableData[i].status == 4) {
+              this.tableData[i].state = "已完成";
+            } else if (this.tableData[i].status == 5) {
+              this.tableData[i].state = "已取消";
+            } else {
+              this.tableData[i].state = "未知状态";
+            }
             i++;
           }
         })
@@ -204,7 +202,7 @@ export default {
     getData(order) {
       this.cf.order = order;
       this.$store.commit("listnewOrder", this.cf);
-    }
+    },
   },
 
   data() {
@@ -223,9 +221,8 @@ export default {
         brandMuti: [],
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
-        P1:""
+        P1: ""
       },
-
       tableData: [] //列表数据
     };
   },
@@ -251,9 +248,8 @@ export default {
     }
   },
 
-  mounted() {
-    //等待模板加载后，
-    this.getProList(); //第一次加载此函数，页面才不会空
+  activated: function() {
+    this.getProList();
   },
   filters: {
     //过滤器

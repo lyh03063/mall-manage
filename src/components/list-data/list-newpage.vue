@@ -61,7 +61,7 @@
       @current-change="handleCurrentChange"
       :total="allCount"
       style="float:right;margin:10px 0 0 0"
-    ></el-pagination> -->
+    ></el-pagination>-->
 
     <!-------------------------------分割线----------------------------------->
     <div>
@@ -83,9 +83,9 @@
       <space height="8"></space>
       <div style="float:right">总运费:{{totalFreight}}</div>
       <space height="8"></space>
+      <el-button type="primary" style="float:right" v-if="status==2" @click="updatePrlList(3)">发货</el-button>
+      <el-button type="success" style="float:right" v-if="status==3" @click="updatePrlList(4)">完成订单</el-button>
 
-      <el-button type="primary" style="float:right" v-if="status==2">发货</el-button>
-      <el-button type="success" style="float:right" v-if="status==3">完成订单</el-button>
     </div>
   </div>
 </template>
@@ -99,6 +99,12 @@ export default {
 
   data() {
     return {
+      url: {
+        list: "http://120.76.160.41:3000/crossList?page=mabang-order", //列表接口
+        add: "http://120.76.160.41:3000/crossList?page=mabang-order", //新增接口
+        modify: "http://120.76.160.41:3000/crossModify?page=mabang-order", //修改接口
+        delete: "http://120.76.160.41:3000/crossList?page=mabang-order" //删除接口
+      },
       Objparma: {
         brandMuti: [],
         pageIndex: 1, //第1页
@@ -108,7 +114,6 @@ export default {
       totalMoney: 0,
       totalCount: 0,
       totalFreight: 0,
-
       allCount: 20,
       status: 0
     };
@@ -118,7 +123,6 @@ export default {
       //当前订单
       this.tableData = this.row.order;
       this.status = this.row.order.status;
-      alert(this.status);
       //alert(JSON.stringify(this.row.order.status))
 
       for (
@@ -135,12 +139,46 @@ export default {
         this.totalCount += parseInt(
           this.tableData.commodityList[index].byCount
         );
+
         //订单运费totalFreight
         this.totalFreight += parseInt(
           this.tableData.commodityList[index].freight
         );
       }
-    }
+    },
+    updatePrlList(condition) {
+      //alert(this.row.order.P1);
+      axios({
+        //请求接口
+        method: "post",
+        url: this.url.modify,
+        data: {
+          findJson: {
+            P1: this.row.order.P1
+          },
+          modifyJson: {
+            status: condition
+          }
+        } //传递参数
+      })
+        .then(response => {
+          console.log("第一次请求结果", response.data);
+          let { code, message } = response.data; //解构赋值
+          if(code == 0 ){
+            if (condition == 3) {
+              alert("订单发货成功");
+            }else{
+              alert("订单已完成")
+            }
+            
+          }    
+              
+        })
+        .catch(function(error) {
+          alert("异常:" + error);
+        });
+    },
+    
   },
   computed: {
     row() {
@@ -148,9 +186,8 @@ export default {
       return this.$store.state.obj;
     }
   },
-  mounted() {
-    //等待模板加载后，
-    this.getProList(); //第一次加载此函数，页面才不会空
+  activated: function() {
+    this.getProList();
   },
   filters: {
     //过滤器
