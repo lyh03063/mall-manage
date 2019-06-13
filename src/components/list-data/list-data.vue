@@ -149,6 +149,8 @@ export default {
            findJson: {
                 //用于定位要修改的数据
                 P1: this.Objparma.P1,
+                name:this.Objparma.name,
+                 category:this.Objparma.category,
               }
 
         } //传递参数
