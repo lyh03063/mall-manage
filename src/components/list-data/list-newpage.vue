@@ -2,7 +2,7 @@
   <div class="main">
     <!---------------------面包屑标题------------------------>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>{{row.twoTitle}}</el-breadcrumb-item>
       <el-breadcrumb-item>{{row.threeTitle}}</el-breadcrumb-item>
       <el-breadcrumb-item>{{row.orderTitle}}</el-breadcrumb-item>
@@ -13,8 +13,14 @@
       <el-button type="primary" v-if="false" size="small">新增</el-button>
       <space height="32" v-else></space>
     </el-row>
+    <router-link to="/listOrder" icon="el-icon-notebook-2">
+      <el-button style="float:right">返回上一级</el-button>
+    </router-link>
+
     <space height="10"></space>
-    <div><h1>{{row.orderTitle}}</h1></div>
+    <div>
+      <h1>{{row.orderTitle}}</h1>
+    </div>
 
     <!------------------------------主列表--------------------------->
     <el-table
@@ -48,6 +54,15 @@
         ></el-button>
       </el-table-column>
     </el-table>
+    <!------------------------------分页--------------------------------------->
+    <!-- <el-pagination
+      background
+      layout="total,prev, pager, next"
+      @current-change="handleCurrentChange"
+      :total="allCount"
+      style="float:right;margin:10px 0 0 0"
+    ></el-pagination> -->
+
     <!-------------------------------分割线----------------------------------->
     <div>
       <div style="float:right">订单创建时间:{{row.order.CreateTime | formatDate}}</div>
@@ -71,9 +86,7 @@
 
       <el-button type="primary" style="float:right" v-if="status==2">发货</el-button>
       <el-button type="success" style="float:right" v-if="status==3">完成订单</el-button>
-      
     </div>
-    
   </div>
 </template>
 
@@ -91,14 +104,13 @@ export default {
         pageIndex: 1, //第1页
         pageSize: 10 //每页10条
       },
-      tableData:{},
-      totalMoney:0,
-      totalCount:0,
-      totalFreight:0,
-      
+      tableData: {},
+      totalMoney: 0,
+      totalCount: 0,
+      totalFreight: 0,
+
       allCount: 20,
-      status:0
-     
+      status: 0
     };
   },
   methods: {
@@ -108,16 +120,25 @@ export default {
       this.status = this.row.order.status;
       //alert(JSON.stringify(this.row.order.status))
 
-      for (let index = 0; index < this.tableData.commodityList.length; index++) {
+      for (
+        let index = 0;
+        index < this.tableData.commodityList.length;
+        index++
+      ) {
         //订单总金额,
-        this.totalMoney +=this.tableData.commodityList[index].price *this.tableData.commodityList[index].byCount;
-                    
+        this.totalMoney +=
+          this.tableData.commodityList[index].price *
+          this.tableData.commodityList[index].byCount;
+
         //订单的商品总数量
-        this.totalCount += parseInt(this.tableData.commodityList[index].byCount);
+        this.totalCount += parseInt(
+          this.tableData.commodityList[index].byCount
+        );
         //订单运费totalFreight
-        this.totalFreight += parseInt(this.tableData.commodityList[index].freight);
+        this.totalFreight += parseInt(
+          this.tableData.commodityList[index].freight
+        );
       }
-      
     }
   },
   computed: {
