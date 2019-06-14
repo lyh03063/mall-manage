@@ -17,9 +17,13 @@
     </el-row>
     <space height="10"></space>
 
-    <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma"></dynamicForm>
+    <dynamicForm
+      @submit1="getProList"
+      @submit2="resetField()"
+      :cf="cfSearchForm"
+      :formData="Objparma"
+    ></dynamicForm>
 
-   
     <space height="12"></space>
 
     <!--主列表-->
@@ -41,10 +45,9 @@
         :formatter="column.formatter"
       ></el-table-column>
 
-      <el-table-column label="操作" width>
+      <el-table-column label="查看订单详情" width>
         <template slot-scope="scope">
-        
-          <router-link to="/listnewpage" >
+          <router-link to="/listnewpage">
             <el-button
               title="订单详情"
               index="listnewpage"
@@ -69,7 +72,7 @@
             size="mini"
             circle
             @click="confirmDelete(scope.row.P1)"
-          ></el-button> -->
+          ></el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -84,7 +87,7 @@
     <listDialogs ref="listDialogs" :cf="cf">
       <!--列表用到的各种弹窗-->
     </listDialogs>
-    
+.
   </div>
 </template>
 <script>
@@ -143,10 +146,7 @@ export default {
         .catch(() => {});
     },
     //-------------查询列表的函数--------------
-    searchList() {
-      // alert("searchList");
-      this.getProList(); //第一次加载此函数，页面才不会空
-    },
+
     //-------------处理分页变动函数--------------
     handleCurrentChange(pageIndex) {
       this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
@@ -154,13 +154,27 @@ export default {
     },
     //-------------ajax获取产品列表函数--------------
     getProList() {
+      if (this.Objparma.state != undefined) {        
+        if (this.Objparma.state == "已下单,未付款") {
+          this.Objparma.status = 1;
+        } else if (this.Objparma.state == "已付款,未发货") {
+          this.Objparma.status = 2;
+        }else if (this.Objparma.state == "已发货") {
+          this.Objparma.status = 3;
+        }else if (this.Objparma.state == "已完成") {
+          this.Objparma.status = 4;
+        }else if (this.Objparma.state == "已取消") {
+          this.Objparma.status = 5;
+        }
+      }
       axios({
         //请求接口
         method: "post",
         url: this.cf.url.list,
         data: {
           findJson: {
-            P1: this.Objparma.P1
+            P1: this.Objparma.P1,
+            status: this.Objparma.status
           }
         } //传递参数
       })
@@ -178,6 +192,7 @@ export default {
             for (let j = 0; j < this.tableData[i].commodityList.length; j++) {}
             //判断状态,给对应的状态重新赋值回显
             if (this.tableData[i].status == 1) {
+              //判断
               this.tableData[i].state = "已下单,未付款";
             } else if (this.tableData[i].status == 2) {
               this.tableData[i].state = "已付款,未发货";
@@ -197,10 +212,17 @@ export default {
           alert("异常:" + error);
         });
     },
+    //-------------ajax获取筛选产品列表函数--------------
+
+    //-------------点击触发传值给Vuex--------------
     getData(order) {
       this.cf.order = order;
       this.$store.commit("listnewOrder", this.cf);
     },
+    resetField() {
+      this.Objparma = {};
+      this.getProList()
+    }
   },
 
   data() {
@@ -209,14 +231,17 @@ export default {
       cfSearchForm: {
         inline: true,
         formItems: this.cf.searchFormItems,
-        btns: [{ text: "查询", event: "submit1", type: "primary" }]
+        btns: [
+          { text: "查询", event: "submit1", type: "primary" },
+          { text: "取消", event: "submit2", type: "primary" }
+        ]
       },
 
       //------------------列表的数据总量--------------
       allCount: 20,
       //------------------ajax请求数据列表的传参对象--------------
       Objparma: {
-        brandMuti: [],
+        status: "",
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
         P1: ""

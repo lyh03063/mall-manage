@@ -30,11 +30,11 @@ export default {
             prop: "P1",
             width: 50
           },
-          {
-            label: "订单编号",
-            prop: "_id",
-            width: 210
-          },
+          // {
+          //   label: "订单编号",
+          //   prop: "_id",
+          //   width: 210
+          // },
           {
             label: "用户名",
             prop: "userName",
@@ -72,6 +72,19 @@ export default {
             label: "搜索订单",
             prop: "P1",
             type: "input"
+          },
+          {
+            label: "订单状态",
+            prop: "state",
+            type: "radio",
+            options: [
+              { label: "1", value: "已下单,未付款" },
+              { label: "2", value: "已付款,未发货" },
+              { label: "3", value: "已发货" },
+              { label: "4", value: "已完成" },
+              { label: "5", value: "已取消" },
+              
+            ]
           }
         ],
         //-------详情字段数组-------
