@@ -11,7 +11,11 @@
         <tr v-for="item in cf.detailItems" :key="item.prop">
           <td class="W100">{{item.label}}</td>
           <td>
-            <div v-if="item.type=='html'" v-html="row[item.prop]"></div>
+            <!--如果该字段带有formatter,使用formatter返回的代码输出-->
+            <div v-if="item.formatter" v-html="item.formatter(row)"></div>
+             <!--否则如果该字段带type是html，使用html原文输出-->
+            <div v-else-if="item.type=='html'" v-html="row[item.prop]"></div>
+             <!--否则，正常输出-->
             <template v-else>{{row[item.prop]}}</template>
           </td>
         </tr>
@@ -58,7 +62,7 @@ export default {
   props: ["cf"],
   data: function() {
     return {
-       //------------------新增表单组件配置--------------
+      //------------------新增表单组件配置--------------
       cfFormAdd: {
         formItems: this.cf.formItems,
         btns: [
@@ -170,7 +174,8 @@ export default {
       this.isShowDialogModify = true; //打开弹窗
       this.formModify = rowNew; //表单赋值
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 
