@@ -4,12 +4,15 @@
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品中心</el-breadcrumb-item>
       <el-breadcrumb-item>{{cf.title}}</el-breadcrumb-item>
- 
-
     </el-breadcrumb>
     <space height="8"></space>
     <el-row>
-      <el-button v-if="cf.flag" type="primary" size="small" @click="$store.commit('openDialogAdd',cf.listIndex)">新增</el-button>
+      <el-button
+        v-if="cf.flag"
+        type="primary"
+        size="small"
+        @click="$store.commit('openDialogAdd',cf.listIndex)"
+      >新增</el-button>
       <space v-else height="32"></space>
     </el-row>
     <space height="10"></space>
@@ -23,9 +26,9 @@
       :stripe="true"
       :cell-style="{padding:'3px'}"
       :header-cell-style="{padding:'6px'}"
-      style="width: 100%"
+      style="width: 100%;"
     >
-      <el-table-column label="id" prop="P1" :width="60" type="selection"  ></el-table-column>
+      <el-table-column label="id" prop="P1" :width="60" type="selection"></el-table-column>
       <el-table-column
         :prop="column.prop"
         :label="column.label"
@@ -33,6 +36,7 @@
         v-for="column in cf.columns"
         :key="column.prop"
         :formatter="column.formatter"
+        style="white-space:nowrap;overflow: hidden;text-overflow: ellipsis;"
       ></el-table-column>
 
       <el-table-column label="操作" width>
@@ -66,7 +70,7 @@
       layout="total,prev, pager, next"
       @current-change="handleCurrentChange"
       :total="allCount"
-      style="float:right;margin:10px 0 0 0"
+      style="float:right;margin:10px 0 0 0;"
     ></el-pagination>
     <listDialogs ref="listDialogs" :cf="cf">
       <!--列表用到的各种弹窗-->
@@ -130,7 +134,6 @@ export default {
     },
     //-------------查询列表的函数--------------
     searchList() {
-     
       this.getProList(); //第一次加载此函数，页面才不会空
     },
 
@@ -146,13 +149,12 @@ export default {
         method: "post",
         url: this.cf.url.list,
         data: {
-           findJson: {
-                //用于定位要修改的数据
-                P1: this.Objparma.P1,
-                name:this.Objparma.name,
-                 category:this.Objparma.category,
-              }
-
+          findJson: {
+            //用于定位要修改的数据
+            P1: this.Objparma.P1,
+            name: this.Objparma.name,
+            category: this.Objparma.category
+          }
         } //传递参数
       })
         .then(response => {
@@ -183,7 +185,7 @@ export default {
       Objparma: {
         brandMuti: [],
         pageIndex: 1, //第1页
-        pageSize: 10, //每页10条
+        pageSize: 10 //每页10条
       },
 
       tableData: [] //列表数据
