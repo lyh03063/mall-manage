@@ -11,6 +11,7 @@
         <tr v-for="item in cf.detailItems" :key="item.prop">
           <td class="W100">{{item.label}}</td>
           <td>
+            
             <div v-if="item.type=='html'" v-html="row[item.prop]"></div>
             <template v-else>{{row[item.prop]}}</template>
           </td>
@@ -128,6 +129,7 @@ export default {
         } //传递参数
       })
         .then(response => {
+          
           this.$message({
             message: "修改产品成功",
             duration: 1500,

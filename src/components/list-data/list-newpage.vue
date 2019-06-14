@@ -97,11 +97,11 @@ export default {
         modify: "http://120.76.160.41:3000/crossModify?page=mabang-order", //修改接口
         delete: "http://120.76.160.41:3000/crossList?page=mabang-order" //删除接口
       },
-      Objparma: {
-        brandMuti: [],
-        pageIndex: 1, //第1页
-        pageSize: 10 //每页10条
-      },
+      // Objparma: {
+      //   brandMuti: [],
+      //   pageIndex: 1, //第1页
+      //   pageSize: 10 //每页10条
+      // },
       totalMoney: 0,
       totalCount: 0,
       totalFreight: 0,
