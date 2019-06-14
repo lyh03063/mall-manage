@@ -19,9 +19,7 @@
 
     <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma"></dynamicForm>
 
-    <div>
-      <h1>{{cf.threeTitle}}</h1>
-    </div>
+   
     <space height="12"></space>
 
     <!--主列表-->

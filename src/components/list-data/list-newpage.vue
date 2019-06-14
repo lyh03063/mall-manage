@@ -18,9 +18,7 @@
     </router-link>
 
     <space height="10"></space>
-    <div>
-      <h1>{{row.orderTitle}}</h1>
-    </div>
+    
 
     <!------------------------------主列表--------------------------->
     <el-table
