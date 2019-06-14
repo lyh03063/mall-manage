@@ -16,12 +16,7 @@
     <router-link to="/listOrder" icon="el-icon-notebook-2">
       <el-button style="float:right">返回上一级</el-button>
     </router-link>
-
     <space height="10"></space>
-    <div>
-      <h1>{{row.orderTitle}}</h1>
-    </div>
-
     <!------------------------------主列表--------------------------->
     <el-table
       :data="row.order.commodityList"
@@ -38,7 +33,7 @@
         :width="order.width"
       ></el-table-column>
       <el-table-column label="操作" width>
-        <el-button
+        <!-- <el-button
           title="编辑"
           icon="el-icon-edit"
           size="mini"
@@ -51,18 +46,9 @@
           size="mini"
           circle
           @click="confirmDelete(scope.row.P1)"
-        ></el-button>
+        ></el-button> -->
       </el-table-column>
     </el-table>
-    <!------------------------------分页--------------------------------------->
-    <!-- <el-pagination
-      background
-      layout="total,prev, pager, next"
-      @current-change="handleCurrentChange"
-      :total="allCount"
-      style="float:right;margin:10px 0 0 0"
-    ></el-pagination> -->
-
     <!-------------------------------分割线----------------------------------->
     <div>
       <div style="float:right">订单创建时间:{{row.order.CreateTime | formatDate}}</div>
@@ -81,11 +67,17 @@
       <space height="8"></space>
       <div style="float:right">订单总价:{{totalMoney}}</div>
       <space height="8"></space>
-      <div style="float:right">总运费:{{totalFreight}}</div>
+      <div style="float:right">运费:{{totalFreight}}</div>
       <space height="8"></space>
+      <div style="float:right">合计:{{allCount}}</div>
+      <space height="8"></space>
+      <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button>
+      <el-button type="primary" style="float:right" v-if="row.order.status==2" @click="updatePrlList(3)">发货</el-button>
+      <el-button type="success" style="float:right" v-if="row.order.status==3" @click="updatePrlList(4)">完成订单</el-button>    
+      <el-button type="primary" style="float:right" v-if="row.order.status==4">订单已完成</el-button>
+      <el-button type="danger" style="float:right" v-if="row.order.status==5">订单已取消</el-button>
 
-      <el-button type="primary" style="float:right" v-if="status==2">发货</el-button>
-      <el-button type="success" style="float:right" v-if="status==3">完成订单</el-button>
+
     </div>
   </div>
 </template>
@@ -99,47 +91,75 @@ export default {
 
   data() {
     return {
+      url: {
+        list: "http://120.76.160.41:3000/crossList?page=mabang-order", //列表接口
+        add: "http://120.76.160.41:3000/crossList?page=mabang-order", //新增接口
+        modify: "http://120.76.160.41:3000/crossModify?page=mabang-order", //修改接口
+        delete: "http://120.76.160.41:3000/crossList?page=mabang-order" //删除接口
+      },
       Objparma: {
         brandMuti: [],
         pageIndex: 1, //第1页
         pageSize: 10 //每页10条
       },
-      tableData: {},
       totalMoney: 0,
       totalCount: 0,
       totalFreight: 0,
-
-      allCount: 20,
-      status: 0
+      allCount: 0,
     };
   },
   methods: {
     getProList() {
-      //当前订单
-      this.tableData = this.row.order;
-      this.status = this.row.order.status;
-      //alert(JSON.stringify(this.row.order.status))
-
-      for (
-        let index = 0;
-        index < this.tableData.commodityList.length;
-        index++
-      ) {
+      //当前订单   
+      for (let index = 0;index < this.row.order.commodityList.length;index++ ) {  
         //订单总金额,
         this.totalMoney +=
-          this.tableData.commodityList[index].price *
-          this.tableData.commodityList[index].byCount;
+          this.row.order.commodityList[index].price *
+          this.row.order.commodityList[index].byCount;
 
         //订单的商品总数量
-        this.totalCount += parseInt(
-          this.tableData.commodityList[index].byCount
-        );
-        //订单运费totalFreight
-        this.totalFreight += parseInt(
-          this.tableData.commodityList[index].freight
-        );
+        this.totalCount += parseInt(this.row.order.commodityList[index].byCount);
+
+       //订单运费totalFreight
+        this.totalFreight += parseInt(this.row.order.commodityList[index].freight);               
       }
-    }
+      this.allCount = this.totalMoney+this.totalFreight
+    },
+    updatePrlList(condition) {
+      axios({
+        //请求接口
+        method: "post",
+        url: this.url.modify,
+        data: {
+          findJson: {
+            P1: this.row.order.P1
+          },
+          modifyJson: {
+            status: condition
+          }
+        } //传递参数
+      })
+        .then(response => {         
+          console.log("第一次请求结果", response.data);
+          let { code, message } = response.data; //解构赋值
+          if(code == 0 ){
+            if (condition == 3) {
+              alert("订单发货成功");
+              this.row.order.status = 3
+              this.row.order.state="已发货"
+            }else {
+              alert("订单已完成")
+             this.row.order.status = 4
+              this.row.order.state="已完成"
+            }         
+          }    
+              
+        })
+        .catch(function(error) {
+          alert("异常:" + error);
+        });
+    },
+    
   },
   computed: {
     row() {
@@ -147,9 +167,8 @@ export default {
       return this.$store.state.obj;
     }
   },
-  mounted() {
-    //等待模板加载后，
-    this.getProList(); //第一次加载此函数，页面才不会空
+  activated() {
+    this.getProList();   
   },
   filters: {
     //过滤器
