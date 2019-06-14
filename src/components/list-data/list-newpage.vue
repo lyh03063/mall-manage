@@ -74,10 +74,8 @@
       <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button>
       <el-button type="primary" style="float:right" v-if="row.order.status==2" @click="updatePrlList(3)">发货</el-button>
       <el-button type="success" style="float:right" v-if="row.order.status==3" @click="updatePrlList(4)">完成订单</el-button>    
-      <el-button type="primary" style="float:right" v-if="row.order.status==4">订单已完成</el-button>
-      <el-button type="danger" style="float:right" v-if="row.order.status==5">订单已取消</el-button>
-
-
+      <el-button type="success" style="float:right" v-if="row.order.status==4">订单已完成</el-button>
+      <el-button type="danger" style="float:right" disabled v-if="row.order.status==5">订单已取消</el-button>
     </div>
   </div>
 </template>
@@ -86,6 +84,7 @@
 <script>
 import Vue from "vue";
 import listDialogs from "./list-dialogs";
+import { ALPN_ENABLED } from 'constants';
 export default {
   components: { listDialogs }, //注册组件
 
@@ -110,12 +109,17 @@ export default {
   },
   methods: {
     getProList() {
+       this.totalMoney=0
+       this.totalCount=0
+       this.totalFreight=0
       //当前订单   
       for (let index = 0;index < this.row.order.commodityList.length;index++ ) {  
         //订单总金额,
         this.totalMoney +=
           this.row.order.commodityList[index].price *
           this.row.order.commodityList[index].byCount;
+          alert(JSON.stringify(this.row.order.commodityList))
+          
 
         //订单的商品总数量
         this.totalCount += parseInt(this.row.order.commodityList[index].byCount);
@@ -124,6 +128,7 @@ export default {
         this.totalFreight += parseInt(this.row.order.commodityList[index].freight);               
       }
       this.allCount = this.totalMoney+this.totalFreight
+      
     },
     updatePrlList(condition) {
       axios({
@@ -159,7 +164,6 @@ export default {
           alert("异常:" + error);
         });
     },
-    
   },
   computed: {
     row() {

@@ -4,13 +4,10 @@
   </div>
 </template>
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData ,quillEditor},
+  components: { listData ,},
   data() {
     return {
       cfList: {
@@ -28,7 +25,7 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 70,
+            width: 70
           },
           {
             label: "商品名称",
@@ -59,7 +56,12 @@ export default {
             label: "图片",
             prop: "album",
             width: 120,
-           
+            formatter1(row, column) {
+              console.log("row", row);
+              var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
+              //格式器
+              return `商品：${strAlbum}`;
+            }
           }
         ],
         //-------筛选表单字段数组-------
@@ -91,7 +93,11 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            width: 100
+            width: 100,
+            formatter(row) {//自定义格式
+              
+              return `<b>${row.name}</b>`;
+            }
           },
           {
             label: "商品简介",
@@ -126,7 +132,17 @@ export default {
           {
             label: "图片",
             prop: "album",
-            width: 100
+            width: 100,
+            formatter(row) {//自定义格式
+              let htmlResult = "";//需要拼装的html代码
+              if (row.album && row.album.length) {//如果相册数组存在
+                row.album.forEach(albumEach => {
+                  //循环：{相册数组}
+                  htmlResult += `<img class="F1 W100 H100" src="${albumEach.url}" alt="" >`;
+                });
+              }
+              return htmlResult;
+            }
           }
         ],
         //-------新增、修改表单字段数组-------
