@@ -32,8 +32,8 @@
         :label="order.label"
         :width="order.width"
       ></el-table-column>
-      <el-table-column label="操作" width>
-        <!-- <el-button
+      <el-table-column label="修改数量" width>
+        <el-button
           title="编辑"
           icon="el-icon-edit"
           size="mini"
@@ -46,7 +46,7 @@
           size="mini"
           circle
           @click="confirmDelete(scope.row.P1)"
-        ></el-button> -->
+        ></el-button>
       </el-table-column>
     </el-table>
     <!-------------------------------分割线----------------------------------->
@@ -71,11 +71,11 @@
       <space height="8"></space>
       <div style="float:right">合计:{{allCount}}</div>
       <space height="8"></space>
-      <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button>
+      <!-- <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button> -->
       <el-button type="primary" style="float:right" v-if="row.order.status==2" @click="updatePrlList(3)">发货</el-button>
       <el-button type="success" style="float:right" v-if="row.order.status==3" @click="updatePrlList(4)">完成订单</el-button>    
-      <el-button type="success" style="float:right" v-if="row.order.status==4">订单已完成</el-button>
-      <el-button type="danger" style="float:right" disabled v-if="row.order.status==5">订单已取消</el-button>
+      <!-- <el-button type="success" style="float:right" v-if="row.order.status==4">订单已完成</el-button> -->
+      <!-- <el-button type="danger" style="float:right" disabled v-if="row.order.status==5">订单已取消</el-button> -->
     </div>
   </div>
 </template>
@@ -118,9 +118,7 @@ export default {
         this.totalMoney +=
           this.row.order.commodityList[index].price *
           this.row.order.commodityList[index].byCount;
-          alert(JSON.stringify(this.row.order.commodityList))
           
-
         //订单的商品总数量
         this.totalCount += parseInt(this.row.order.commodityList[index].byCount);
 

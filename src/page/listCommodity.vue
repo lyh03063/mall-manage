@@ -74,7 +74,11 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            type: "input"
+            type: "input",
+            handle(formData,propOrigin,propOperate){//处理器
+            formData[propOrigin]={"$regex": formData[propOperate], "$options":"i"}
+
+            }
           },
           {
             label: "分类编号",
