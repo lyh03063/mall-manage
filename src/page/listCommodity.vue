@@ -29,7 +29,7 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            width: 100
+            width: 200
             // formatter(row, column) {
             //   //格式器
             //   return `商品：${row.name}`;
@@ -43,27 +43,27 @@ export default {
           {
             label: "价格",
             prop: "price",
-            width: 100
+            width: 70
           },
           {
             label: "运费",
             prop: "freight",
-            width: 100
+            width: 70
           },
           {
             label: "库存",
             prop: "store",
-            width: 100
+            width: 70
           },
           {
             label: "分类编号",
             prop: "category",
-            width: 100
+            width: 70
           },
           {
             label: "图片",
             prop: "album",
-            width: 100
+            width: 120
           }
         ],
         //-------筛选表单字段数组-------
