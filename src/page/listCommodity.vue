@@ -24,7 +24,7 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 100,
+            width: 70,
           },
           {
             label: "商品名称",
