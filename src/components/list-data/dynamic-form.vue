@@ -38,7 +38,17 @@
           v-else-if="item.type=='editor'"
         ></quillEditor>
 
-        <el-input v-model="formData[item.prop]" v-else></el-input>
+        <template v-else>
+          <template v-if="item.handle">
+            <el-input
+              v-model="formData[item.prop+'__source']"
+              @input="item.handle(formData,item.prop,item.prop+'__source')"
+            ></el-input>
+          </template>
+          <template v-else>
+            <el-input v-model="formData[item.prop]"></el-input>
+          </template>
+        </template>
       </el-form-item>
     </template>
 
@@ -50,7 +60,6 @@
         v-for="(item,index) in cf.btns"
         :key="index"
       >{{item.text}}</el-button>
-
     </el-form-item>
   </el-form>
 </template>
@@ -77,8 +86,7 @@ export default {
         };
       }
     },
-formData:Object
-
+    formData: Object
   },
   data() {
     return {
