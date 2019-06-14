@@ -16,10 +16,7 @@
     <router-link to="/listOrder" icon="el-icon-notebook-2">
       <el-button style="float:right">返回上一级</el-button>
     </router-link>
-
     <space height="10"></space>
-    
-
     <!------------------------------主列表--------------------------->
     <el-table
       :data="row.order.commodityList"
@@ -52,15 +49,6 @@
         ></el-button> -->
       </el-table-column>
     </el-table>
-    <!------------------------------分页--------------------------------------->
-    <!-- <el-pagination
-      background
-      layout="total,prev, pager, next"
-      @current-change="handleCurrentChange"
-      :total="allCount"
-      style="float:right;margin:10px 0 0 0"
-    ></el-pagination>-->
-
     <!-------------------------------分割线----------------------------------->
     <div>
       <div style="float:right">订单创建时间:{{row.order.CreateTime | formatDate}}</div>
@@ -82,11 +70,7 @@
       <div style="float:right">总运费:{{totalFreight}}</div>
       <space height="8"></space>
       <el-button type="primary" style="float:right" v-if="status==2" @click="updatePrlList(3)">发货</el-button>
-      <el-button type="success" style="float:right" v-if="status==3" @click="updatePrlList(4)">完成订单</el-button>
-      <!-- <el-button type="success" style="float:right" @click="activated">测试</el-button> -->
-      <!-- {{allCount}} -->
-
-
+      <el-button type="success" style="float:right" v-if="status==3" @click="updatePrlList(4)">完成订单</el-button>    
     </div>
   </div>
 </template>
@@ -116,7 +100,8 @@ export default {
       totalCount: 0,
       totalFreight: 0,
       allCount: 20,
-      status: 0
+      status: 0,
+    
     };
   },
   methods: {
@@ -125,30 +110,20 @@ export default {
       this.tableData = this.row.order;
       this.status = this.row.order.status;
       //alert(JSON.stringify(this.row.order.status))
-
-      for (
-        let index = 0;
-        index < this.tableData.commodityList.length;
-        index++
-      ) {
+      for (let index = 0;index < this.tableData.commodityList.length;index++ ) {  
         //订单总金额,
         this.totalMoney +=
           this.tableData.commodityList[index].price *
           this.tableData.commodityList[index].byCount;
 
         //订单的商品总数量
-        this.totalCount += parseInt(
-          this.tableData.commodityList[index].byCount
-        );
+        this.totalCount += parseInt(this.tableData.commodityList[index].byCount);
 
-        //订单运费totalFreight
-        this.totalFreight += parseInt(
-          this.tableData.commodityList[index].freight
-        );
+       //订单运费totalFreight
+        this.totalFreight += parseInt( this.tableData.commodityList[index].freight);               
       }
     },
     updatePrlList(condition) {
-      //alert(this.row.order.P1);
       axios({
         //请求接口
         method: "post",
@@ -162,17 +137,19 @@ export default {
           }
         } //传递参数
       })
-        .then(response => {
+        .then(response => {         
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
           if(code == 0 ){
             if (condition == 3) {
               alert("订单发货成功");
-              
-            }else{
+              this.status = 3
+              this.row.order.state="已发货"
+            }else {
               alert("订单已完成")
-            }
-            
+              this.status = 4
+              this.row.order.state="已完成"
+            }         
           }    
               
         })
