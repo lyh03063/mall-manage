@@ -16,17 +16,16 @@
       <space height="32" v-else></space>
     </el-row>
     <space height="10"></space>
-
+    <!-------------------条件搜索框--------------------->
     <dynamicForm
       @submit1="getProList"
       @submit2="resetField()"
       :cf="cfSearchForm"
       :formData="Objparma"
     ></dynamicForm>
-
     <space height="12"></space>
 
-    <!--主列表-->
+    <!------------主列表--------->
     <el-table
       :data="tableData"
       border
@@ -66,13 +65,7 @@
             circle
             @click="$refs.listDialogs.showModify(scope.row)"
           ></el-button>
-          <el-button
-            title="删除"
-            icon="el-icon-close"
-            size="mini"
-            circle
-            @click="confirmDelete(scope.row.P1)"
-          ></el-button>-->
+          -->
         </template>
       </el-table-column>
     </el-table>
@@ -87,7 +80,6 @@
     <listDialogs ref="listDialogs" :cf="cf">
       <!--列表用到的各种弹窗-->
     </listDialogs>
-.
   </div>
 </template>
 <script>
@@ -112,41 +104,6 @@ export default {
         row: row
       });
     },
-    //-------------确认删除产品的函数--------------
-    confirmDelete(proId) {
-      this.$confirm("确认删除该产品？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          axios({
-            //请求接口
-            method: "post",
-            url: this.cf.url.delete,
-            data: {
-              findJson: {
-                //用于定位要修改的数据
-                P1: proId
-              }
-            } //传递参数
-          })
-            .then(response => {
-              this.$message({
-                message: "删除产品成功",
-                duration: 1500,
-                type: "success"
-              });
-              this.getProList(); //更新产品列表
-            })
-            .catch(function(error) {
-              alert("异常:" + error);
-            });
-        })
-        .catch(() => {});
-    },
-    //-------------查询列表的函数--------------
-
     //-------------处理分页变动函数--------------
     handleCurrentChange(pageIndex) {
       this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
@@ -154,16 +111,16 @@ export default {
     },
     //-------------ajax获取产品列表函数--------------
     getProList() {
-      if (this.Objparma.state != undefined) {        
+      if (this.Objparma.state != undefined) {
         if (this.Objparma.state == "已下单,未付款") {
           this.Objparma.status = 1;
         } else if (this.Objparma.state == "已付款,未发货") {
           this.Objparma.status = 2;
-        }else if (this.Objparma.state == "已发货") {
+        } else if (this.Objparma.state == "已发货") {
           this.Objparma.status = 3;
-        }else if (this.Objparma.state == "已完成") {
+        } else if (this.Objparma.state == "已完成") {
           this.Objparma.status = 4;
-        }else if (this.Objparma.state == "已取消") {
+        } else if (this.Objparma.state == "已取消") {
           this.Objparma.status = 5;
         }
       }
@@ -184,6 +141,8 @@ export default {
           this.tableData = list;
           this.page = page;
           this.allCount = page.allCount; //更改总数据量
+
+          this.tableData.forEach(tableDataEach => {});
 
           var i = 0;
           //第一重循环订单列表
@@ -212,8 +171,6 @@ export default {
           alert("异常:" + error);
         });
     },
-    //-------------ajax获取筛选产品列表函数--------------
-
     //-------------点击触发传值给Vuex--------------
     getData(order) {
       this.cf.order = order;
@@ -221,10 +178,9 @@ export default {
     },
     resetField() {
       this.Objparma = {};
-      this.getProList()
+      this.getProList();
     }
   },
-
   data() {
     return {
       //------------------筛选表单组件配置--------------
@@ -236,7 +192,6 @@ export default {
           { text: "取消", event: "submit2", type: "primary" }
         ]
       },
-
       //------------------列表的数据总量--------------
       allCount: 20,
       //------------------ajax请求数据列表的传参对象--------------

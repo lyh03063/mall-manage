@@ -40,6 +40,7 @@
             size="mini"
             circle
             type="index"
+            v-if="row.order.status == 1"
             @click="updateCount(scope.row,1)"
           ></el-button>
           <el-button
@@ -48,7 +49,7 @@
             size="mini"
             circle
             @click="updateCount(scope.row,2)"
-            v-if="scope.row.byCount > 1"
+            v-if="scope.row.byCount > 1 && row.order.status == 1"
           ></el-button>
         </template>
       </el-table-column>
@@ -75,7 +76,6 @@
       <space height="8"></space>
       <div style="float:right">合计:{{allCount}}</div>
       <space height="8"></space>
-      <!-- <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button> -->
       <el-button
         type="primary"
         style="float:right"
@@ -88,8 +88,6 @@
         v-if="row.order.status==3"
         @click="updatePrlList(4)"
       >完成订单</el-button>
-      <!-- <el-button type="success" style="float:right" v-if="row.order.status==4">订单已完成</el-button> -->
-      <!-- <el-button type="danger" style="float:right" disabled v-if="row.order.status==5">订单已取消</el-button> -->
     </div>
   </div>
 </template>
@@ -127,28 +125,18 @@ export default {
       this.totalMoney = 0;
       this.totalCount = 0;
       this.totalFreight = 0;
-      //当前订单
-      for (
-        let index = 0;
-        index < this.row.order.commodityList.length;
-        index++
-      ) {
-        //订单总金额,
-        this.totalMoney +=
-          this.row.order.commodityList[index].price *
-          this.row.order.commodityList[index].byCount;
 
-        //订单的商品总数量
-        this.totalCount += parseInt(
-          this.row.order.commodityList[index].byCount
-        );
-
+     this.row.order.commodityList.forEach(commodityEach => {
+        //订单总金额
+          this.totalMoney +=commodityEach.price*commodityEach.byCount;
+           //订单的商品总数量
+        this.totalCount += parseInt(commodityEach.byCount);
         //订单运费totalFreight
-        this.totalFreight += parseInt(
-          this.row.order.commodityList[index].freight
-        );
-      }
-      this.allCount = this.totalMoney + this.totalFreight;
+        this.totalFreight += parseInt(commodityEach.freight);
+
+      });
+       this.allCount = this.totalMoney + this.totalFreight;
+
     },
     updatePrlList(condition) {
       axios({
@@ -184,25 +172,19 @@ export default {
         });
     },
     updateCount(row, i) {
-      if (i == 1) {
-        row.P1--;
-        this.row.order.commodityList[row.P1].byCount++;
-        row.P1++;
-      } else if (i == 2) {
-        row.P1--;
-        if (this.row.order.commodityList[row.P1].byCount>1) {
-         this.row.order.commodityList[row.P1].byCount--;
-         
-        }else{
-          alert("数量不能小于1")
-          row.P1++;
-          return
+
+      this.row.order.commodityList.forEach(commodityEach => {
+        if (commodityEach.P1 == row.P1) {
+          if (i == 1) {
+            commodityEach.byCount++;
+          } else if (i == 2 && commodityEach.byCount > 1) {
+           commodityEach.byCount--;
+          } else {
+            alert("数量不能小于1");
+            return;
+          }
         }
-         
-        row.P1++;
-        
-      }
-      //alert(JSON.stringify(i))
+      });
       axios({
         method: "post",
         url: this.url.modify,
@@ -224,7 +206,7 @@ export default {
         .catch(function(error) {
           alert("异常:" + error);
         });
-    },
+    }
   },
   computed: {
     row() {
