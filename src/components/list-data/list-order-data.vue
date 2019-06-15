@@ -142,30 +142,24 @@ export default {
           this.page = page;
           this.allCount = page.allCount; //更改总数据量
 
-          this.tableData.forEach(tableDataEach => {});
+          this.tableData.forEach(tableDataEach => {
 
-          var i = 0;
-          //第一重循环订单列表
-          for (let index = 0; index < this.tableData.length; index++) {
-            //第二重循环订单列表中的商品列表
-            for (let j = 0; j < this.tableData[i].commodityList.length; j++) {}
-            //判断状态,给对应的状态重新赋值回显
-            if (this.tableData[i].status == 1) {
+             if (tableDataEach.status == 1) {
               //判断
-              this.tableData[i].state = "已下单,未付款";
-            } else if (this.tableData[i].status == 2) {
-              this.tableData[i].state = "已付款,未发货";
-            } else if (this.tableData[i].status == 3) {
-              this.tableData[i].state = "已发货";
-            } else if (this.tableData[i].status == 4) {
-              this.tableData[i].state = "已完成";
-            } else if (this.tableData[i].status == 5) {
-              this.tableData[i].state = "已取消";
+              tableDataEach.state = "已下单,未付款";
+            } else if (tableDataEach.status == 2) {
+              tableDataEach.state = "已付款,未发货";
+            } else if (tableDataEach.status == 3) {
+              tableDataEach.state = "已发货";
+            } else if (tableDataEach.status == 4) {
+              tableDataEach.state = "已完成";
+            } else if (tableDataEach.status == 5) {
+              tableDataEach.state = "已取消";
             } else {
-              this.tableData[i].state = "未知状态";
+              tableDataEach.state = "未知状态";
             }
-            i++;
-          }
+
+          });
         })
         .catch(function(error) {
           alert("异常:" + error);

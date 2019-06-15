@@ -126,17 +126,15 @@ export default {
       this.totalCount = 0;
       this.totalFreight = 0;
 
-     this.row.order.commodityList.forEach(commodityEach => {
+      this.row.order.commodityList.forEach(commodityEach => {
         //订单总金额
-          this.totalMoney +=commodityEach.price*commodityEach.byCount;
-           //订单的商品总数量
+        this.totalMoney += commodityEach.price * commodityEach.byCount;
+        //订单的商品总数量
         this.totalCount += parseInt(commodityEach.byCount);
         //订单运费totalFreight
         this.totalFreight += parseInt(commodityEach.freight);
-
       });
-       this.allCount = this.totalMoney + this.totalFreight;
-
+      this.allCount = this.totalMoney + this.totalFreight;
     },
     updatePrlList(condition) {
       axios({
@@ -172,13 +170,12 @@ export default {
         });
     },
     updateCount(row, i) {
-
       this.row.order.commodityList.forEach(commodityEach => {
         if (commodityEach.P1 == row.P1) {
           if (i == 1) {
             commodityEach.byCount++;
           } else if (i == 2 && commodityEach.byCount > 1) {
-           commodityEach.byCount--;
+            commodityEach.byCount--;
           } else {
             alert("数量不能小于1");
             return;
