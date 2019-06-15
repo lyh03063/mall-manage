@@ -4,9 +4,13 @@
   </div>
 </template>
 <script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData },
+  components: { listData ,quillEditor},
   data() {
     return {
       cfList: {
@@ -30,15 +34,6 @@ export default {
             label: "商品名称",
             prop: "name",
             width: 200
-            // formatter(row, column) {
-            //   //格式器
-            //   return `商品：${row.name}`;
-            // }
-          },
-          {
-            label: "商品详情",
-            prop: "detail",
-            width: 100
           },
           {
             label: "价格",
@@ -93,25 +88,7 @@ export default {
             prop: "category",
             type: "input"
           }
-          // {
-          //   label: "系统类型",
-          //   prop: "system",
-          //   type: "select",
-          //   options: [
-          //     { label: "安卓/Android", value: "安卓" },
-          //     { label: "苹果/IOS", value: "苹果" }
-          //   ]
-          // },
-          // {
-          //   label: "品牌",
-          //   prop: "brandMuti",
-          //   type: "checkbox",
-          //   options: [
-          //     { label: "小米", value: "小米" },
-          //     { label: "华为", value: "华为" },
-          //     { label: "苹果", value: "苹果" }
-          //   ]
-          // }
+          
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -123,12 +100,17 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            width: 100
+            width: 100,
+            formatter(row) {//自定义格式
+              
+              return `<b>${row.name}</b>`;
+            }
           },
           {
             label: "商品简介",
             prop: "description",
             width: 100
+         
           },
           {
             label: "商品详情",
@@ -206,7 +188,10 @@ export default {
           {
             label: "图片",
             prop: "album",
-            type: "input"
+           formatter(row) {//自定义格式
+              
+              return `<img>${row.album}</img>`;
+            }
           }
         ]
       }

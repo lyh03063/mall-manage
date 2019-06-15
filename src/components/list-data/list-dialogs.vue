@@ -132,6 +132,7 @@ export default {
         } //传递参数
       })
         .then(response => {
+          
           this.$message({
             message: "修改产品成功",
             duration: 1500,

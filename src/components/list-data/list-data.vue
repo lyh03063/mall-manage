@@ -27,6 +27,7 @@
       :cell-style="{padding:'3px'}"
       :header-cell-style="{padding:'6px'}"
       style="width: 100%;"
+      
     >
       <el-table-column label="id" prop="P1" :width="60" type="selection"></el-table-column>
       <el-table-column
@@ -36,7 +37,6 @@
         v-for="column in cf.columns"
         :key="column.prop"
         :formatter="column.formatter"
-        style="white-space:nowrap;overflow: hidden;text-overflow: ellipsis;"
       ></el-table-column>
 
       <el-table-column label="操作" width>
@@ -72,7 +72,7 @@
       :total="allCount"
       style="float:right;margin:10px 0 0 0;"
     ></el-pagination>
-    <listDialogs ref="listDialogs" :cf="cf">
+    <listDialogs ref="listDialogs" :cf="cf" >
       <!--列表用到的各种弹窗-->
     </listDialogs>
   </div>
