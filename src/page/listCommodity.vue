@@ -4,10 +4,13 @@
   </div>
 </template>
 <script>
-
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData ,},
+  components: { listData ,quillEditor},
   data() {
     return {
       cfList: {
@@ -107,6 +110,7 @@ export default {
             label: "商品简介",
             prop: "description",
             width: 100
+         
           },
           {
             label: "商品详情",
@@ -184,7 +188,10 @@ export default {
           {
             label: "图片",
             prop: "album",
-            type: "input"
+           formatter(row) {//自定义格式
+              
+              return `<img>${row.album}</img>`;
+            }
           }
         ]
       }
