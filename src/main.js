@@ -81,6 +81,12 @@ const store = new Vuex.Store({//定义Vuex的存储对象
   },
   mutations: {//变更事件
     listnewOrder(state, param){
+      if (param.condition == 3) {
+        param.state = "已发货"
+      }else if (param.condition == 4) {
+        param.state = "已完成"
+      }
+
       console.log("触发了", param);
       state.obj=param;
     },
@@ -107,8 +113,6 @@ const store = new Vuex.Store({//定义Vuex的存储对象
       //   doc.itemValue = param.row[doc.field]; //修改itemValue
       // });
       state.listState[param.listIndex].row = param.row;//将行数据保存到vuex
-
-
     },
     closeDialogDetail(state, listIndex) {//关闭详情弹窗事件
       state.listState[listIndex].isShowDialogDetail = false;

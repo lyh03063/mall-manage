@@ -33,20 +33,24 @@
         :width="order.width"
       ></el-table-column>
       <el-table-column label="修改数量" width>
-        <el-button
-          title="编辑"
-          icon="el-icon-edit"
-          size="mini"
-          circle
-          @click="$refs.listDialogs.showModify(scope.row)"
-        ></el-button>
-        <el-button
-          title="删除"
-          icon="el-icon-close"
-          size="mini"
-          circle
-          @click="confirmDelete(scope.row.P1)"
-        ></el-button>
+        <template slot-scope="scope">
+          <el-button
+            title="增加"
+            icon="el-icon-plus"
+            size="mini"
+            circle
+            type="index"
+            @click="updateCount(scope.row,1)"
+          ></el-button>
+          <el-button
+            title="减少"
+            icon="el-icon-minus"
+            size="mini"
+            circle
+            @click="updateCount(scope.row,2)"
+            v-if="scope.row.byCount > 1"
+          ></el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!-------------------------------分割线----------------------------------->
@@ -72,8 +76,18 @@
       <div style="float:right">合计:{{allCount}}</div>
       <space height="8"></space>
       <!-- <el-button type="primary" style="float:right" v-if="row.order.status==1">等待客户支付</el-button> -->
-      <el-button type="primary" style="float:right" v-if="row.order.status==2" @click="updatePrlList(3)">发货</el-button>
-      <el-button type="success" style="float:right" v-if="row.order.status==3" @click="updatePrlList(4)">完成订单</el-button>    
+      <el-button
+        type="primary"
+        style="float:right"
+        v-if="row.order.status==2"
+        @click="updatePrlList(3)"
+      >发货</el-button>
+      <el-button
+        type="success"
+        style="float:right"
+        v-if="row.order.status==3"
+        @click="updatePrlList(4)"
+      >完成订单</el-button>
       <!-- <el-button type="success" style="float:right" v-if="row.order.status==4">订单已完成</el-button> -->
       <!-- <el-button type="danger" style="float:right" disabled v-if="row.order.status==5">订单已取消</el-button> -->
     </div>
@@ -84,7 +98,8 @@
 <script>
 import Vue from "vue";
 import listDialogs from "./list-dialogs";
-import { ALPN_ENABLED } from 'constants';
+import { ALPN_ENABLED } from "constants";
+import { all } from "q";
 export default {
   components: { listDialogs }, //注册组件
 
@@ -104,29 +119,36 @@ export default {
       totalMoney: 0,
       totalCount: 0,
       totalFreight: 0,
-      allCount: 0,
+      allCount: 0
     };
   },
   methods: {
     getProList() {
-       this.totalMoney=0
-       this.totalCount=0
-       this.totalFreight=0
-      //当前订单   
-      for (let index = 0;index < this.row.order.commodityList.length;index++ ) {  
+      this.totalMoney = 0;
+      this.totalCount = 0;
+      this.totalFreight = 0;
+      //当前订单
+      for (
+        let index = 0;
+        index < this.row.order.commodityList.length;
+        index++
+      ) {
         //订单总金额,
         this.totalMoney +=
           this.row.order.commodityList[index].price *
           this.row.order.commodityList[index].byCount;
-          
-        //订单的商品总数量
-        this.totalCount += parseInt(this.row.order.commodityList[index].byCount);
 
-       //订单运费totalFreight
-        this.totalFreight += parseInt(this.row.order.commodityList[index].freight);               
+        //订单的商品总数量
+        this.totalCount += parseInt(
+          this.row.order.commodityList[index].byCount
+        );
+
+        //订单运费totalFreight
+        this.totalFreight += parseInt(
+          this.row.order.commodityList[index].freight
+        );
       }
-      this.allCount = this.totalMoney+this.totalFreight
-      
+      this.allCount = this.totalMoney + this.totalFreight;
     },
     updatePrlList(condition) {
       axios({
@@ -142,21 +164,62 @@ export default {
           }
         } //传递参数
       })
-        .then(response => {         
+        .then(response => {
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
-          if(code == 0 ){
+          if (code == 0) {
             if (condition == 3) {
               alert("订单发货成功");
-              this.row.order.status = 3
-              this.row.order.state="已发货"
-            }else {
-              alert("订单已完成")
-             this.row.order.status = 4
-              this.row.order.state="已完成"
-            }         
-          }    
-              
+              this.row.order.status = 3;
+              this.row.order.state = "已发货";
+            } else {
+              alert("订单已完成");
+              this.row.order.status = 4;
+              this.row.order.state = "已完成";
+            }
+          }
+        })
+        .catch(function(error) {
+          alert("异常:" + error);
+        });
+    },
+    updateCount(row, i) {
+      if (i == 1) {
+        row.P1--;
+        this.row.order.commodityList[row.P1].byCount++;
+        row.P1++;
+      } else if (i == 2) {
+        row.P1--;
+        if (this.row.order.commodityList[row.P1].byCount>1) {
+         this.row.order.commodityList[row.P1].byCount--;
+         
+        }else{
+          alert("数量不能小于1")
+          row.P1++;
+          return
+        }
+         
+        row.P1++;
+        
+      }
+      //alert(JSON.stringify(i))
+      axios({
+        method: "post",
+        url: this.url.modify,
+        data: {
+          findJson: {
+            P1: this.row.order.P1
+          },
+          modifyJson: {
+            commodityList: this.row.order.commodityList
+          }
+        } //传递参数
+      })
+        .then(response => {
+          console.log("第一次请求结果", response.data);
+          let { code, message } = response.data; //解构赋值
+          alert(message);
+          this.getProList();
         })
         .catch(function(error) {
           alert("异常:" + error);
@@ -170,7 +233,7 @@ export default {
     }
   },
   activated() {
-    this.getProList();   
+    this.getProList();
   },
   filters: {
     //过滤器
