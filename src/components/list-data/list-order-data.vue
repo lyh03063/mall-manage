@@ -151,8 +151,6 @@ export default {
           this.page = page;
           this.allCount = page.allCount; //更改总数据量
 
-          //this.tableData.forEach(tableDataEach => {});
-
           var i = 0;
           //第一重循环订单列表
           for (let index = 0; index < this.tableData.length; index++) {
@@ -172,12 +170,12 @@ export default {
             } else {
               tableDataEach.state = "未知状态";
             }
-
-          });
+          
+        }
         })
         .catch(function(error) {
           alert("异常:" + error);
-        });
+        })
     },
     //-------------分页查询---------------------
     getOrderPaging() {
