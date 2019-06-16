@@ -80,16 +80,15 @@ const store = new Vuex.Store({//定义Vuex的存储对象
     obj:{}
   },
   mutations: {//变更事件
-    listnewOrder(state, param){
-      if (param.condition == 3) {
-        param.state = "已发货"
-      }else if (param.condition == 4) {
-        param.state = "已完成"
-      }
-
-      console.log("触发了", param);
-      state.obj=param;
-    },
+    // listnewOrder(state, param){
+    //   if (param.condition == 3) {
+    //     param.state = "已发货"
+    //   }else if (param.condition == 4) {
+    //     param.state = "已完成"
+    //   }
+    //   console.log("触发了", param);
+    //   state.obj=param;
+    // },
     initListState(state, param) {//改变列表的初始状态值
       console.log("param", param);
       state.listState[param.listIndex] = param.objState;

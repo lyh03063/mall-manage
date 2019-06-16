@@ -14,8 +14,6 @@ export default {
         listIndex: "listOrder", //vuex对应的字段
         twoTitle: "会员/订单",
         threeTitle: "订单列表",
-        orderTitle:"订单详情",
-        flagAdd: false,
 
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-order", //列表接口
@@ -118,45 +116,13 @@ export default {
             prop: "remark",
             type: "textarea"
           }
-        ],
-        //--------------------订单详情页的字段------------------
-        orderItems: [
-          {
-            label: "商品ID",
-            prop: "P1",
-            width: 100
-          },
-          {
-            label: "商品名称",
-            prop: "name",
-            width: 100
-          },
-          {
-            label: "商品单价",
-            prop: "price",
-            width: 100
-          },
-          {
-            label: "商品数量",
-            prop: "byCount",
-            width: 100
-          },
-          {
-            label: "运费",
-            prop: "freight",
-            width: 100
-          },
-        ],
+        ],    
       }
     };
   },
-  // mounted() {
-  //   this.$store.commit("listnewOrder", this.cfList);
-  // },
   beforeCreate() {
     this.$store.commit("changeActiveMenu", "listOrder"); //菜单聚焦
   },
-  
 };
 </script>
 
