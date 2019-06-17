@@ -57,13 +57,13 @@ export default {
           {
             label: "订单状态",
             prop: "status",
-            type: "radio",
+            type: "select",
             options: [
-              { label: "1", value: "已下单,未付款" },
-              { label: "2", value: "已付款,未发货" },
-              { label: "3", value: "已发货" },
-              { label: "4", value: "已完成" },
-              { label: "5", value: "已取消" },             
+              { label: "已下单,未付款", value: "1" },
+              { label: "已付款,未发货", value: "2" },
+              { label: "已发货", value: "3" },
+              { label: "已完成", value: "4" },
+              { label: "已取消", value: "5" },             
             ]
           }
         ],

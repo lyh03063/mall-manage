@@ -40,11 +40,11 @@
 
       <el-table-column label="查看订单详情" width>
         <template slot-scope="scope">
-          <router-link :to="'/listnewpage?P1=' + scope.row.P1">
+          <router-link :to="'/listOrderCommodity?P1=' + scope.row.P1">
             <el-button
               title="订单详情"
-              index="listnewpage"
-              route="/listnewpage"
+              index="listOrderCommodity"
+              route="/listOrderCommodity"
               icon="el-icon-notebook-2"
               circle
               size="mini"
@@ -107,35 +107,15 @@ export default {
     };
   },
   methods: {
-    showDetail(row) {
-      this.$store.commit("openDialogDetail", {
-        listIndex: this.cf.listIndex,
-        row: row
-      });
-    },
-    //-------------处理分页变动函数--------------
-    handleCurrentChange(pageIndex) {
-      this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
-      this.getpage(); //第一次加载此函数，页面才不会空
-    },
     //-------------ajax获取产品列表函数--------------
     getOrderList() {
-        if (this.Objparma.status == "已下单,未付款") {
-          this.Objparma.status = 1;
-        } else if (this.Objparma.status == "已付款,未发货") {
-          this.Objparma.status = 2;
-        } else if (this.Objparma.status == "已发货") {
-          this.Objparma.status = 3;
-        } else if (this.Objparma.status == "已完成") {
-          this.Objparma.status = 4;
-        } else if (this.Objparma.status == "已取消") {
-          this.Objparma.status = 5;
-        }
       axios({
         //请求接口
         method: "post",
         url: this.cf.url.list,
         data: {
+          pageSize: this.Objparma.pageSize,
+          pageIndex:this.Objparma.pageIndex,
           findJson: {
             P1: this.Objparma.P1,
             status: this.Objparma.status
@@ -148,59 +128,9 @@ export default {
            this.tableData = list;
            this.page = page;
            this.allCount = page.allCount; //更改总数据量
-           alert(JSON.stringify(this.tableData))
+           //alert(JSON.stringify(this.tableData))
           
-            if (this.tableData.status == 1) {
-              //判断
-              this.tableData.status = "已下单,未付款";
-            } else if (this.tableData.status == 2) {
-              this.tableData.status = "已付款,未发货";
-            } else if (this.tableData.status == 3) {
-              this.tableData.status = "已发货";
-            } else if (this.tableData.status == 4) {
-              this.tableData.status = "已完成";
-            } else if (this.tableData.status == 5) {
-              this.tableData.status = "已取消";
-            } else {
-              this.tableData.status = "未知状态";
-            }
-          
-        //}
-        })
-        .catch(function(error) {
-          alert("异常:" + error);
-        })
-    },
-    //-------------分页查询---------------------
-    getOrderPaging() {
-     // if (this.Objparma.state != undefined) {
-        // if (this.Objparma.state == "已下单,未付款") {
-        //   this.Objparma.status = 1;
-        // } else if (this.Objparma.state == "已付款,未发货") {
-        //   this.Objparma.status = 2;
-        // } else if (this.Objparma.state == "已发货") {
-        //   this.Objparma.status = 3;
-        // } else if (this.Objparma.state == "已完成") {
-        //   this.Objparma.status = 4;
-        // } else if (this.Objparma.state == "已取消") {
-        //   this.Objparma.status = 5;
-        // }
-     // }
-      axios({
-        //请求接口
-        method: "post",
-        url: this.cf.url.list,
-        data: this.Objparma
-        //传递参数
-      })
-        .then(response => {
-          console.log("第一次请求结果", response.data);
-          let { list, page } = response.data; //解构赋值
-          this.tableData = list;
-          this.page = page;
-          this.allCount = page.allCount; //更改总数据量
-
-          var i = 0;
+           var i = 0;
           //第一重循环订单列表
           for (let index = 0; index < this.tableData.length; index++) {
             //判断状态,给对应的状态重新赋值回显
@@ -223,27 +153,23 @@ export default {
         })
         .catch(function(error) {
           alert("异常:" + error);
-        });
+        })
     },
-    //--------------点击取消初始化查询条件---------
+     //--------------点击取消初始化查询条件---------
     resetField() {
       this.Objparma = {};
-      this.getpage();
+      this.getOrderList();
     },
-    //-------------判断--------------
-    getpage() {
-      //alert(JSON.stringify(this.Objparma.state))
-      if (this.Objparma.status != "") {
-        this.getOrderList();
-      } else {
-        this.getOrderPaging();
-      }
-    },
+    //-------------处理分页变动函数--------------
+    handleCurrentChange(pageIndex) {
+      this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
+      this.getOrderList(); //点击切换页调用查询函数
+    },    
     //-------------------------修改下拉框的值改变事件函数-------------------------
     changePageSize(pageSize) {
       this.Objparma.pageSize = pageSize; //改变的每页的数据量
-      this.getpage(); //调用获取产品列表的函数
-    }
+      this.getOrderList(); //调用获取产品列表的函数
+    },
   },
   created() {
     let objState = {
@@ -267,7 +193,7 @@ export default {
     }
   },
   activated: function() {
-    this.getpage();
+    this.getOrderList();
   },
   filters: {
     //过滤器

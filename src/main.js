@@ -15,7 +15,7 @@ import listCommodity from "./page/listCommodity";
 import listMember from "./page/listMember";
 import listOrder from "./page/listOrder";
 import listOrderData from "./components/list-data/list-order-data";
-import listnewpage from "./components/list-data/list-newpage";
+import listOrderCommodity from "./components/list-data/list-order-commodity";
 
 
 
@@ -42,8 +42,8 @@ const router = new VueRouter({
           component: listCategory,
         },
         {
-          path: '/listnewpage',
-          component: listnewpage,
+          path: '/listOrderCommodity',
+          component: listOrderCommodity,
         },
         {
           path: '/listMember',

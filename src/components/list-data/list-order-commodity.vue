@@ -240,23 +240,23 @@ export default {
           let { code, message } = response.data; //解构赋值
           if (code == 0) {
             if (this.form.region == 1) {
-              alert("订单发货成功");
+              alert("修改订单成功");
               this.totalData.status = 1;
               this.State = "已下单,未付款";
             } else if (this.form.region == 2) {
-              alert("订单已完成");
+              alert("修改订单成功");
               this.totalData.status = 2;
               this.State = "已付款,未下单";
             } else if (this.form.region == 3) {
-              alert("订单已完成");
+              alert("修改订单成功");
               this.totalData.status = 3;
               this.State = "已发货";
             } else if (this.form.region == 4) {
-              alert("订单已完成");
+              alert("修改订单成功");
               this.totalData.status = 4;
               this.State = "已完成";
             } else if (this.form.region == 5) {
-              alert("订单已完成");
+              alert("修改订单成功");
               this.totalData.status = 5;
               this.State = "已取消";
             }
