@@ -4,13 +4,10 @@
   </div>
 </template>
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData ,quillEditor},
+  components: { listData},
   data() {
     return {
       cfList: {
@@ -21,6 +18,7 @@ export default {
           list: "http://120.76.160.41:3000/crossList?page=mabang-commodity", //列表接口
           add: "http://120.76.160.41:3000/crossAdd?page=mabang-commodity", //新增接口
           modify: "http://120.76.160.41:3000/crossModify?page=mabang-commodity", //修改接口
+          detail: "http://120.76.160.41:3000/crossDetail?page=mabang-commodity", //查看单条数据详情接口，在修改表单或详情弹窗用到
           delete: "http://120.76.160.41:3000/crossDelete?page=mabang-commodity" //删除接口
         },
         //-------列配置数组-------
@@ -58,11 +56,13 @@ export default {
           {
             label: "图片",
             prop: "album",
+          
             width: 120,
             formatter1(row, column) {
               console.log("row", row);
               var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
               //格式器
+             
               return `商品：${strAlbum}`;
             }
           }
@@ -78,9 +78,12 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input",
-            handle(formData,propOrigin,propOperate){//处理器
-            formData[propOrigin]={"$regex": formData[propOperate], "$options":"i"}
-
+            handle(formData, propOrigin, propOperate) {
+              //处理器
+              formData[propOrigin] = {
+                $regex: formData[propOperate],
+                $options: "i"
+              };
             }
           },
           {
@@ -88,7 +91,6 @@ export default {
             prop: "category",
             type: "input"
           }
-          
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -101,8 +103,9 @@ export default {
             label: "商品名称",
             prop: "name",
             width: 100,
-            formatter(row) {//自定义格式
-              
+            formatter(row) {
+              //自定义格式
+
               return `<b>${row.name}</b>`;
             }
           },
@@ -110,7 +113,6 @@ export default {
             label: "商品简介",
             prop: "description",
             width: 100
-         
           },
           {
             label: "商品详情",
@@ -141,12 +143,16 @@ export default {
             label: "图片",
             prop: "album",
             width: 100,
-            formatter(row) {//自定义格式
-              let htmlResult = "";//需要拼装的html代码
-              if (row.album && row.album.length) {//如果相册数组存在
+            formatter(row) {
+              //自定义格式
+              let htmlResult = ""; //需要拼装的html代码
+              if (row.album && row.album.length) {
+                //如果相册数组存在
                 row.album.forEach(albumEach => {
                   //循环：{相册数组}
-                  htmlResult += `<img class="F1 W100 H100" src="${albumEach.url}" alt="" >`;
+                  htmlResult += `<img class="F1 W100 H100" src="${
+                    albumEach.url
+                  }" alt="" >`;
                 });
               }
               return htmlResult;
@@ -188,10 +194,12 @@ export default {
           {
             label: "图片",
             prop: "album",
-           formatter(row) {//自定义格式
-              
-              return `<img>${row.album}</img>`;
-            }
+             type: "vueJsonEditor"
+          },
+          {
+            label: "其他数据",
+            prop: "extend",
+             type: "vueJsonEditor"
           }
         ]
       }
