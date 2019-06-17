@@ -32,7 +32,15 @@
         </el-checkbox-group>
         <!--文本域-->
         <el-input type="textarea" v-model="formData[item.prop]" v-else-if="item.type=='textarea'"></el-input>
-        <!--如果是json编辑器-->
+        <!--如果是vue-json编辑器-->
+        <vue-json-editor
+          v-model="formData[item.prop]"
+         
+          v-else-if="item.type=='vueJsonEditor'"
+        
+          lang="zh"
+        ></vue-json-editor>
+        <!--如果是普通json编辑器-->
         <textarea
           class="WP100 H100 PL10 PR10 PT5 PB5"
           v-model="formData_Json[item.prop]"
@@ -79,10 +87,12 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import vueJsonEditor from "vue-json-editor";
 export default {
   components: {
     //注册组件
-    quillEditor
+    quillEditor,
+    vueJsonEditor
   },
 
   props: {
@@ -102,6 +112,7 @@ export default {
   data() {
     return {
       formData_Json: {},
+     
       editorOption: {
         //编辑器的配置
         modules: {
@@ -115,6 +126,9 @@ export default {
     };
   },
   methods: {
+    onJsonChange() {
+      alert("onJsonChange");
+    },
     changeJson(prop) {
       console.log("changeJson");
       let val = this.formData_Json[prop];
@@ -163,12 +177,11 @@ export default {
         method: "post",
         url: this.cf.urlInit,
         data: {
-         id: this.formData.P1
+          id: this.formData.P1
         } //传递参数
       });
       // console.log("doc", doc);
       this.docGet = data.doc;
-
     }
 
     console.log("this.docGet", this.docGet);
