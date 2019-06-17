@@ -4,13 +4,10 @@
   </div>
 </template>
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData, quillEditor },
+  components: { listData},
   data() {
     return {
       cfList: {
@@ -59,11 +56,13 @@ export default {
           {
             label: "图片",
             prop: "album",
+          
             width: 120,
             formatter1(row, column) {
               console.log("row", row);
               var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
               //格式器
+             
               return `商品：${strAlbum}`;
             }
           }
