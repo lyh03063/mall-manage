@@ -7,7 +7,7 @@
 
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData ,},
+  components: { listData},
   data() {
     return {
       cfList: {
@@ -77,9 +77,12 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input",
-            handle(formData,propOrigin,propOperate){//处理器
-            formData[propOrigin]={"$regex": formData[propOperate], "$options":"i"}
-
+            handle(formData, propOrigin, propOperate) {
+              //处理器
+              formData[propOrigin] = {
+                $regex: formData[propOperate],
+                $options: "i"
+              };
             }
           },
           {
@@ -87,7 +90,6 @@ export default {
             prop: "category",
             type: "input"
           }
-          
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -100,8 +102,9 @@ export default {
             label: "商品名称",
             prop: "name",
             width: 100,
-            formatter(row) {//自定义格式
-              
+            formatter(row) {
+              //自定义格式
+
               return `<b>${row.name}</b>`;
             }
           },
@@ -109,7 +112,6 @@ export default {
             label: "商品简介",
             prop: "description",
             width: 100
-         
           },
           {
             label: "商品详情",
@@ -140,12 +142,16 @@ export default {
             label: "图片",
             prop: "album",
             width: 100,
-            formatter(row) {//自定义格式
-              let htmlResult = "";//需要拼装的html代码
-              if (row.album && row.album.length) {//如果相册数组存在
+            formatter(row) {
+              //自定义格式
+              let htmlResult = ""; //需要拼装的html代码
+              if (row.album && row.album.length) {
+                //如果相册数组存在
                 row.album.forEach(albumEach => {
                   //循环：{相册数组}
-                  htmlResult += `<img class="F1 W100 H100" src="${albumEach.url}" alt="" >`;
+                  htmlResult += `<img class="F1 W100 H100" src="${
+                    albumEach.url
+                  }" alt="" >`;
                 });
               }
               return htmlResult;
@@ -186,8 +192,8 @@ export default {
           },
           {
             label: "图片",
-            prop: "album",  
-            type: "input"
+            prop: "album",
+             type: "jsonEditor"
           }
         ]
       }

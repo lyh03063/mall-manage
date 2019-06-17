@@ -16,8 +16,8 @@ import listMember from "./page/listMember";
 import listOrder from "./page/listOrder";
 import listOrderData from "./components/list-data/list-order-data";
 import listOrderCommodity from "./components/list-data/list-order-commodity";
-
-
+import util from "./assets/js/util.js";
+window.util=util;
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 const router = new VueRouter({

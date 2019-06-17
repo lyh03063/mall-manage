@@ -29,7 +29,7 @@ export default {
             width: 100
           },
           {
-            label: "用户名",
+            label: "用户名",   
             prop: "userName",
             width: 100
           },
