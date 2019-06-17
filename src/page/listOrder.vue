@@ -23,27 +23,27 @@ export default {
           {
             label: "订单ID",
             prop: "P1",
-            width: 50
+            width: 80
           },
           {
             label: "用户名",
             prop: "userName",
-            width: 120
+            width: 140
           },
           {
             label: "订单状态",
             prop: "state",
-            width: 130
+            width: 150
           },
           {
             label: "备注信息",
             prop: "leaveMsg",
-            width: 100
+            width: 150
           },
           {
             label: "拓展信息",
             prop: "extend.aaa",
-            width: 100
+            width: 150
           },
 
         ],

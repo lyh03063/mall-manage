@@ -3,8 +3,7 @@
     <!---------------------面包屑标题------------------------>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>会员/订单</el-breadcrumb-item>
-      <el-breadcrumb-item>订单列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/listOrder' }">订单列表</el-breadcrumb-item>
       <el-breadcrumb-item>订单详情</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="8"></space>
@@ -13,9 +12,9 @@
       <el-button type="primary" v-if="false" size="small">新增</el-button>
       <space height="32" v-else></space>
     </el-row>
-    <router-link to="/listOrder" icon="el-icon-notebook-2">
+    <!-- <router-link to="/listOrder" icon="el-icon-notebook-2">
       <el-button style="float:right">返回上一级</el-button>
-    </router-link>
+    </router-link> -->
     <space height="10"></space>
     <!------------------------------主列表--------------------------->
     <el-table
@@ -26,7 +25,7 @@
       size="medium"
     >
       <el-table-column prop="P1" label="商品ID" width="100"></el-table-column>
-      <el-table-column prop="name" label="商品名称" width="100"></el-table-column>
+      <el-table-column prop="name" label="商品名称" width="200"></el-table-column>
       <el-table-column prop="price" label="商品单价" width="100"></el-table-column>
       <el-table-column prop="byCount" label="商品数量" width="100"></el-table-column>
       <el-table-column prop="freight" label="运费" width="100"></el-table-column>
@@ -79,6 +78,11 @@
       <tr>
         <td>订单修改时间</td>
         <td>{{totalData.UpdateTime | formatDate}}</td>
+      </tr>
+
+       <tr>
+        <td>订单编号</td>
+        <td>{{totalData._id}}</td>
       </tr>
 
       <tr>

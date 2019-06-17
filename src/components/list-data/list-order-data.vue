@@ -2,7 +2,6 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>会员/订单</el-breadcrumb-item>
       <el-breadcrumb-item>订单列表</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="20"></space>
@@ -85,7 +84,7 @@ export default {
         formItems: this.cf.searchFormItems,
         btns: [
           { text: "查询", event: "submit1", type: "primary" },
-          { text: "取消", event: "submit2", type: "primary" }
+          { text: "重置", event: "submit2", type: "" }
         ]
       },
       //------------------列表的数据总量--------------
@@ -151,7 +150,8 @@ export default {
     },
      //--------------点击取消初始化查询条件---------
     resetField() {
-      this.Objparma = {};
+      this.Objparma.status = ""
+      this.Objparma.P1 = ""
       this.getOrderList();
     },
     //-------------处理分页变动函数--------------
