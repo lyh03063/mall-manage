@@ -70,7 +70,13 @@ export default {
             label: "会员编号",
             prop: "P1",
             type: "input"
+          },
+           {
+            label: "昵称",
+            prop: "nickName",
+            type: "input"
           }
+
         ],
         //-------详情字段数组-------
         detailItems: [

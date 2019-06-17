@@ -17,7 +17,7 @@
     </el-row>
     <space height="10"></space>
 
-    <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma"></dynamicForm>
+    <dynamicForm @submit1="searchList" :cf="cfSearchForm" :formData="Objparma.findJson"></dynamicForm>
 
     <!--主列表-->
     <el-table
@@ -27,7 +27,6 @@
       :cell-style="{padding:'3px'}"
       :header-cell-style="{padding:'6px'}"
       style="width: 100%;"
-      
     >
       <el-table-column label="id" prop="P1" :width="60" type="selection"></el-table-column>
       <el-table-column
@@ -72,7 +71,7 @@
       :total="allCount"
       style="float:right;margin:10px 0 0 0;"
     ></el-pagination>
-    <listDialogs ref="listDialogs" :cf="cf" >
+    <listDialogs ref="listDialogs" :cf="cf">
       <!--列表用到的各种弹窗-->
     </listDialogs>
   </div>
@@ -134,6 +133,7 @@ export default {
     },
     //-------------查询列表的函数--------------
     searchList() {
+   
       this.getProList(); //第一次加载此函数，页面才不会空
     },
 
@@ -144,18 +144,21 @@ export default {
     },
     //-------------ajax获取产品列表函数--------------
     getProList() {
+      console.log("this.Objparma####", this.Objparma);
       axios({
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: {
-          findJson: {
-            //用于定位要修改的数据
-            P1: this.Objparma.P1,
-            name: this.Objparma.name,
-            category: this.Objparma.category
-          }
-        } //传递参数
+        data: this.Objparma,
+        // data: {
+         
+        //   findJson: {
+        //     //用于定位要修改的数据
+        //     P1: this.Objparma.P1,
+        //     name: this.Objparma.name,
+        //     category: this.Objparma.category
+        //   }
+        // } //传递参数
       })
         .then(response => {
           console.log("第一次请求结果", response.data);
@@ -183,7 +186,7 @@ export default {
       allCount: 20,
       //------------------ajax请求数据列表的传参对象--------------
       Objparma: {
-        brandMuti: [],
+        findJson: {},
         pageIndex: 1, //第1页
         pageSize: 10 //每页10条
       },
@@ -216,7 +219,7 @@ export default {
   mounted() {
     //等待模板加载后，
     this.getProList(); //第一次加载此函数，页面才不会空
-  },
+  }
 };
 </script>
 
