@@ -27,7 +27,7 @@
 
     <!--新增数据表单弹窗-->
     <el-dialog
-      title="新增产品"
+      title="新增数据"
       :visible.sync="isShowDialogAdd"
       width="50%"
       :before-close="closeDialogAddFun"
@@ -41,7 +41,7 @@
     </el-dialog>
 
     <!--修改数据表单弹窗-->
-    <el-dialog title="修改产品" :visible.sync="isShowDialogModify" width="60%">
+    <el-dialog title="修改数据" :visible.sync="isShowDialogModify" v-if='isShowDialogModify' width="60%">
       <dynamicForm
         :formData="formModify"
         :cf="cfFormModify"
@@ -72,6 +72,7 @@ export default {
       },
       //------------------修改表单组件配置--------------
       cfFormModify: {
+        urlInit:this.cf.url.detail,
         formItems: this.cf.formItems,
         btns: [
           { text: "修改", event: "submit", type: "primary" },
