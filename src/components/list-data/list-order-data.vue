@@ -5,11 +5,7 @@
       <el-breadcrumb-item>会员/订单</el-breadcrumb-item>
       <el-breadcrumb-item>订单列表</el-breadcrumb-item>
     </el-breadcrumb>
-    <space height="8"></space>
-    <el-row>
-      <el-button type="primary" size="small" @click="$store.commit('openDialogAdd',cf.listIndex)">新增</el-button>
-    </el-row>
-    <space height="10"></space>
+    <space height="20"></space>
     <!-------------------条件搜索框--------------------->
     <dynamicForm
       @submit1="getOrderList"
@@ -17,8 +13,6 @@
       :cf="cfSearchForm"
       :formData="Objparma"
     ></dynamicForm>
-    <space height="12"></space>
-
     <!------------主列表--------->
     <el-table
       :data="tableData"
@@ -172,6 +166,7 @@ export default {
     },
   },
   created() {
+    
     let objState = {
       //列表的vuex初始状态对象
       isShowDialogAdd: false, //是否显示新增弹窗
