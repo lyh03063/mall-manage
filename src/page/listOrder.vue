@@ -12,9 +12,6 @@ export default {
     return {
       cfList: {
         listIndex: "listOrder", //vuex对应的字段
-        twoTitle: "会员/订单",
-        threeTitle: "订单列表",
-
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-order", //列表接口
           add: "http://120.76.160.41:3000/crossList?page=mabang-order", //新增接口
@@ -28,11 +25,6 @@ export default {
             prop: "P1",
             width: 50
           },
-          // {
-          //   label: "订单编号",
-          //   prop: "_id",
-          //   width: 210
-          // },
           {
             label: "用户名",
             prop: "userName",
@@ -53,16 +45,7 @@ export default {
             prop: "extend.aaa",
             width: 100
           },
-          // {
-          //   label: "订单创建时间",
-          //   prop: "CreateTime",
-          //   width: 100
-          // },
-          // {
-          //   label: "订单修改时间",
-          //   prop: "UpdateTime",
-          //   width: 100
-          // }
+
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
@@ -73,15 +56,14 @@ export default {
           },
           {
             label: "订单状态",
-            prop: "state",
+            prop: "status",
             type: "radio",
             options: [
               { label: "1", value: "已下单,未付款" },
               { label: "2", value: "已付款,未发货" },
               { label: "3", value: "已发货" },
               { label: "4", value: "已完成" },
-              { label: "5", value: "已取消" },
-              
+              { label: "5", value: "已取消" },             
             ]
           }
         ],

@@ -77,10 +77,10 @@ const store = new Vuex.Store({//定义Vuex的存储对象
     listState: {//存放列表的共享状态，
 
     },
-    obj:{}
+    obj: {}
   },
   mutations: {//变更事件
-  
+
     initListState(state, param) {//改变列表的初始状态值
       console.log("param", param);
       state.listState[param.listIndex] = param.objState;

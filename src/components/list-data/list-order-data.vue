@@ -2,8 +2,8 @@
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>{{cf.twoTitle}}</el-breadcrumb-item>
-      <el-breadcrumb-item>{{cf.threeTitle}}</el-breadcrumb-item>
+      <el-breadcrumb-item>会员/订单</el-breadcrumb-item>
+      <el-breadcrumb-item>订单列表</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="8"></space>
     <el-row>
@@ -120,19 +120,17 @@ export default {
     },
     //-------------ajax获取产品列表函数--------------
     getOrderList() {
-      if (this.Objparma.state != undefined) {
-        if (this.Objparma.state == "已下单,未付款") {
+        if (this.Objparma.status == "已下单,未付款") {
           this.Objparma.status = 1;
-        } else if (this.Objparma.state == "已付款,未发货") {
+        } else if (this.Objparma.status == "已付款,未发货") {
           this.Objparma.status = 2;
-        } else if (this.Objparma.state == "已发货") {
+        } else if (this.Objparma.status == "已发货") {
           this.Objparma.status = 3;
-        } else if (this.Objparma.state == "已完成") {
+        } else if (this.Objparma.status == "已完成") {
           this.Objparma.status = 4;
-        } else if (this.Objparma.state == "已取消") {
+        } else if (this.Objparma.status == "已取消") {
           this.Objparma.status = 5;
         }
-      }
       axios({
         //请求接口
         method: "post",
@@ -147,31 +145,27 @@ export default {
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { list, page } = response.data; //解构赋值
-          this.tableData = list;
-          this.page = page;
-          this.allCount = page.allCount; //更改总数据量
-
-          var i = 0;
-          //第一重循环订单列表
-          for (let index = 0; index < this.tableData.length; index++) {
-            //第二重循环订单列表中的商品列表
-            //判断状态,给对应的状态重新赋值回显
-            if (this.tableData[i].status == 1) {
+           this.tableData = list;
+           this.page = page;
+           this.allCount = page.allCount; //更改总数据量
+           alert(JSON.stringify(this.tableData))
+          
+            if (this.tableData.status == 1) {
               //判断
-              tableDataEach.state = "已下单,未付款";
-            } else if (tableDataEach.status == 2) {
-              tableDataEach.state = "已付款,未发货";
-            } else if (tableDataEach.status == 3) {
-              tableDataEach.state = "已发货";
-            } else if (tableDataEach.status == 4) {
-              tableDataEach.state = "已完成";
-            } else if (tableDataEach.status == 5) {
-              tableDataEach.state = "已取消";
+              this.tableData.status = "已下单,未付款";
+            } else if (this.tableData.status == 2) {
+              this.tableData.status = "已付款,未发货";
+            } else if (this.tableData.status == 3) {
+              this.tableData.status = "已发货";
+            } else if (this.tableData.status == 4) {
+              this.tableData.status = "已完成";
+            } else if (this.tableData.status == 5) {
+              this.tableData.status = "已取消";
             } else {
-              tableDataEach.state = "未知状态";
+              this.tableData.status = "未知状态";
             }
           
-        }
+        //}
         })
         .catch(function(error) {
           alert("异常:" + error);
@@ -179,19 +173,19 @@ export default {
     },
     //-------------分页查询---------------------
     getOrderPaging() {
-      if (this.Objparma.state != undefined) {
-        if (this.Objparma.state == "已下单,未付款") {
-          this.Objparma.status = 1;
-        } else if (this.Objparma.state == "已付款,未发货") {
-          this.Objparma.status = 2;
-        } else if (this.Objparma.state == "已发货") {
-          this.Objparma.status = 3;
-        } else if (this.Objparma.state == "已完成") {
-          this.Objparma.status = 4;
-        } else if (this.Objparma.state == "已取消") {
-          this.Objparma.status = 5;
-        }
-      }
+     // if (this.Objparma.state != undefined) {
+        // if (this.Objparma.state == "已下单,未付款") {
+        //   this.Objparma.status = 1;
+        // } else if (this.Objparma.state == "已付款,未发货") {
+        //   this.Objparma.status = 2;
+        // } else if (this.Objparma.state == "已发货") {
+        //   this.Objparma.status = 3;
+        // } else if (this.Objparma.state == "已完成") {
+        //   this.Objparma.status = 4;
+        // } else if (this.Objparma.state == "已取消") {
+        //   this.Objparma.status = 5;
+        // }
+     // }
       axios({
         //请求接口
         method: "post",
@@ -238,6 +232,7 @@ export default {
     },
     //-------------判断--------------
     getpage() {
+      //alert(JSON.stringify(this.Objparma.state))
       if (this.Objparma.status != "") {
         this.getOrderList();
       } else {
