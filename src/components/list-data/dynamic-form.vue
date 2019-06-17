@@ -31,7 +31,7 @@
         </el-checkbox-group>
 
         <el-input type="textarea" v-model="formData[item.prop]" v-else-if="item.type=='textarea'"></el-input>
-
+        <el-input v-model="formData[item.prop]" v-else-if="item.type=='img'" ></el-input>
         <quillEditor
           v-model="formData[item.prop]"
           :options="editorOption"
@@ -54,7 +54,7 @@
 
     <el-form-item>
       <!-- 查询按钮 -->
-    
+
       <el-button
         :type="item.type"
         @click="$emit(item.event)"
