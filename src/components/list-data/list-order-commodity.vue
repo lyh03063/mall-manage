@@ -3,8 +3,7 @@
     <!---------------------面包屑标题------------------------>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/listHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>会员/订单</el-breadcrumb-item>
-      <el-breadcrumb-item>订单列表</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/listOrder' }">订单列表</el-breadcrumb-item>
       <el-breadcrumb-item>订单详情</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="8"></space>
@@ -13,9 +12,9 @@
       <el-button type="primary" v-if="false" size="small">新增</el-button>
       <space height="32" v-else></space>
     </el-row>
-    <router-link to="/listOrder" icon="el-icon-notebook-2">
+    <!-- <router-link to="/listOrder" icon="el-icon-notebook-2">
       <el-button style="float:right">返回上一级</el-button>
-    </router-link>
+    </router-link> -->
     <space height="10"></space>
     <!------------------------------主列表--------------------------->
     <el-table
@@ -25,31 +24,11 @@
       width="100%"
       size="medium"
     >
-      <el-table-column        
-        prop="P1"
-        label="商品ID"
-        width="100"
-      ></el-table-column>
-      <el-table-column        
-        prop="name"
-        label="商品名称"
-        width="100"
-      ></el-table-column>
-      <el-table-column        
-        prop="price"
-        label="商品单价"
-        width="100"
-      ></el-table-column>
-      <el-table-column        
-        prop="byCount"
-        label="商品数量"
-        width="100"
-      ></el-table-column>
-      <el-table-column        
-        prop="freight"
-        label="运费"
-        width="100"
-      ></el-table-column>
+      <el-table-column prop="P1" label="商品ID" width="100"></el-table-column>
+      <el-table-column prop="name" label="商品名称" width="200"></el-table-column>
+      <el-table-column prop="price" label="商品单价" width="100"></el-table-column>
+      <el-table-column prop="byCount" label="商品数量" width="100"></el-table-column>
+      <el-table-column prop="freight" label="运费" width="100"></el-table-column>
       <el-table-column label="修改数量" width>
         <template slot-scope="scope">
           <el-button
@@ -77,6 +56,7 @@
     <table class="ordertable">
       <tr>
         <td>收货地址</td>
+
         <td>{{totalData.postAddress.address}}</td>
       </tr>
 
@@ -98,6 +78,11 @@
       <tr>
         <td>订单修改时间</td>
         <td>{{totalData.UpdateTime | formatDate}}</td>
+      </tr>
+
+       <tr>
+        <td>订单编号</td>
+        <td>{{totalData._id}}</td>
       </tr>
 
       <tr>
@@ -170,9 +155,14 @@ export default {
       totalMoney: 0, //订单总金额
       totalCount: 0, //订单商品总数量
       totalFreight: 0, //订单总运费
-      totalData: 0, //查询的数据列表
+      totalData: {
+        postAddress: {}
+      }, //查询的数据列表
       allTotalMoney: 0, //订单总金额+订单总运费=总金额
-      State: "" //单前订单状态
+      State: "", //单前订单状态
+      one:0
+
+
     };
   },
   methods: {
@@ -191,10 +181,11 @@ export default {
           let { list } = response.data; //解构赋值
 
           this.totalData = list[0];
+          console.log("this.totalData", this.totalData);
           this.totalMoney = 0;
           this.totalCount = 0;
           this.totalFreight = 0;
-         
+
           this.totalData.commodityList.forEach(commodityEach => {
             //订单总金额
             this.totalMoney += commodityEach.price * commodityEach.byCount;
@@ -208,7 +199,7 @@ export default {
           if (this.totalData.status == 1) {
             this.State = "已下单,未付款";
           } else if (this.totalData.status == 2) {
-            this.State = "已付款,未下单";
+            this.State = "已付款,未发货";
           } else if (this.totalData.status == 3) {
             this.State = "已发货";
           } else if (this.totalData.status == 4) {
@@ -240,23 +231,38 @@ export default {
           let { code, message } = response.data; //解构赋值
           if (code == 0) {
             if (this.form.region == 1) {
-              alert("修改订单成功");
+              this.$message({
+                message: "修改状态订单成功",
+                type: "success"
+              });
               this.totalData.status = 1;
               this.State = "已下单,未付款";
             } else if (this.form.region == 2) {
-              alert("修改订单成功");
+              this.$message({
+                message: "修改状态订单成功",
+                type: "success"
+              });
               this.totalData.status = 2;
-              this.State = "已付款,未下单";
+              this.State = "已付款,未发货";
             } else if (this.form.region == 3) {
-              alert("修改订单成功");
+              this.$message({
+                message: "修改状态订单成功",
+                type: "success"
+              });
               this.totalData.status = 3;
               this.State = "已发货";
             } else if (this.form.region == 4) {
-              alert("修改订单成功");
+              this.$message({
+                message: "修改状态订单成功",
+                type: "success"
+              });
               this.totalData.status = 4;
               this.State = "已完成";
             } else if (this.form.region == 5) {
-              alert("修改订单成功");
+              this.$message({
+                message: "修改状态订单成功",
+                type: "success"
+              });
               this.totalData.status = 5;
               this.State = "已取消";
             }
@@ -276,7 +282,7 @@ export default {
           } else if (i == 2 && commodityEach.byCount > 1) {
             commodityEach.byCount--;
           } else {
-            alert("数量不能小于1");
+            this.$message("数量不能小于1");
             return;
           }
         }
@@ -296,12 +302,19 @@ export default {
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
-          alert(message);
+          this.$message({
+            message: "修改数量成功",
+            type: "success"
+          });
           this.getOrder();
+          this.one++
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
+    },
+    list(){
+      alert("触发了监听器")
     }
   },
   computed: {
@@ -309,6 +322,23 @@ export default {
       //来自vuex的当前行数据
       return this.$store.state.obj;
     }
+  },
+   watch: {
+    // one(newone,oldone) {
+     
+        
+    //    alert(newone)
+    //    alert(oldone)  
+      
+    //     deep: true //深度监听
+    // },
+    // one: {
+    // 　　handler(newName, oldName) {
+    //   　　alert(newName)
+    // 　　},
+    // 　　immediate: true
+    // }
+  
   },
   activated() {
     this.getOrder();
