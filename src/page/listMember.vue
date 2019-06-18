@@ -44,7 +44,6 @@ export default {
             width: 65,
             formatter: function(row) {
               return "******";
-
             }
           },
           {
@@ -69,7 +68,6 @@ export default {
             width: 140,
             formatter: function(row) {
               return "2019-06-18 10:32";
-
             }
           }
         ],
@@ -97,6 +95,10 @@ export default {
             prop: "userName"
           },
           {
+            label: "呢称",
+            prop: "nickName"
+          },
+          {
             label: "密码",
             prop: "password"
           },
@@ -104,10 +106,7 @@ export default {
             label: "手机号",
             prop: "phone"
           },
-          {
-            label: "呢称",
-            prop: "nickName"
-          },
+
           {
             label: "性别",
             prop: "sex"
@@ -129,6 +128,11 @@ export default {
             type: "input"
           },
           {
+            label: "呢称",
+            prop: "nickName",
+            type: "input"
+          },
+          {
             label: "密码",
             prop: "password",
             type: "input"
@@ -138,11 +142,7 @@ export default {
             prop: "phone",
             type: "input"
           },
-          {
-            label: "呢称",
-            prop: "nickName",
-            type: "input"
-          },
+
           {
             label: "性别",
             prop: "sex",
