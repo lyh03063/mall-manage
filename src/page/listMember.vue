@@ -11,9 +11,9 @@ export default {
   data() {
     return {
       cfList: {
-        listIndex: "listCategory", //vuex对应的字段
+        listIndex: "listMember", //vuex对应的字段
         twoTitle: "会员/订单",
-        threeTitle: "订单详情",
+        threeTitle: "会员中心",
         flag: true,
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-member", //列表接口
@@ -65,9 +65,19 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
+<<<<<<< HEAD
             width: 140,
             formatter: function(row) {
               return "2019-06-18 10:32";
+=======
+            width: 160,
+            formatter: function(date) {
+              var dateee = new Date(date).toJSON();
+              return new Date(+new Date(dateee) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "");
+>>>>>>> d058f7014ed6510381bc2282ea4b756aee3b4bd7
             }
           }
         ],

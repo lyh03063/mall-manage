@@ -10,11 +10,12 @@
     <!--------------------------------新增按钮---------------------->
     <el-row>
       <el-button type="primary" v-if="false" size="small">新增</el-button>
-      <space height="32" v-else></space>
+      <space height="20" v-else></space>
     </el-row>
+    订单用户:{{totalData.userName}}
     <!-- <router-link to="/listOrder" icon="el-icon-notebook-2">
       <el-button style="float:right">返回上一级</el-button>
-    </router-link> -->
+    </router-link>-->
     <space height="10"></space>
     <!------------------------------主列表--------------------------->
     <el-table
@@ -80,7 +81,7 @@
         <td>{{totalData.UpdateTime | formatDate}}</td>
       </tr>
 
-       <tr>
+      <tr>
         <td>订单编号</td>
         <td>{{totalData._id}}</td>
       </tr>
@@ -130,6 +131,7 @@
 
 <script>
 import Vue from "vue";
+
 import listDialogs from "./list-dialogs";
 import { ALPN_ENABLED } from "constants";
 import { all } from "q";
@@ -160,9 +162,7 @@ export default {
       }, //查询的数据列表
       allTotalMoney: 0, //订单总金额+订单总运费=总金额
       State: "", //单前订单状态
-      one:0
-
-
+      one: 0
     };
   },
   methods: {
@@ -229,6 +229,17 @@ export default {
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
+
+          let table = [
+            { namu:"已下单,未付款",value:1 },
+            { namu:"已付款,未发货",value:2 },
+            { namu:"已发货",value:3 },
+            { namu:"已完成",value:4 },
+            { namu:"已取消",value:5 },           
+          ]
+
+          
+
           if (code == 0) {
             if (this.form.region == 1) {
               this.$message({
@@ -307,38 +318,18 @@ export default {
             type: "success"
           });
           this.getOrder();
-          this.one++
+          this.one++;
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
     },
-    list(){
-      alert("触发了监听器")
-    }
   },
   computed: {
     row() {
       //来自vuex的当前行数据
       return this.$store.state.obj;
     }
-  },
-   watch: {
-    // one(newone,oldone) {
-     
-        
-    //    alert(newone)
-    //    alert(oldone)  
-      
-    //     deep: true //深度监听
-    // },
-    // one: {
-    // 　　handler(newName, oldName) {
-    //   　　alert(newName)
-    // 　　},
-    // 　　immediate: true
-    // }
-  
   },
   activated() {
     this.getOrder();
