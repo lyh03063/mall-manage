@@ -13,9 +13,9 @@
           <td>
             <!--如果该字段带有formatter,使用formatter返回的代码输出-->
             <div v-if="item.formatter" v-html="item.formatter(row)"></div>
-             <!--否则如果该字段带type是html，使用html原文输出-->
+            <!--否则如果该字段带type是html，使用html原文输出-->
             <div v-else-if="item.type=='html'" v-html="row[item.prop]"></div>
-             <!--否则，正常输出-->
+            <!--否则，正常输出-->
             <template v-else>{{row[item.prop]}}</template>
           </td>
         </tr>
@@ -41,7 +41,12 @@
     </el-dialog>
 
     <!--修改数据表单弹窗-->
-    <el-dialog title="修改数据" :visible.sync="isShowDialogModify" v-if='isShowDialogModify' width="60%">
+    <el-dialog
+      title="修改数据"
+      :visible.sync="isShowDialogModify"
+      v-if="isShowDialogModify"
+      width="60%"
+    >
       <dynamicForm
         :formData="formModify"
         :cf="cfFormModify"
@@ -72,7 +77,7 @@ export default {
       },
       //------------------修改表单组件配置--------------
       cfFormModify: {
-        urlInit:this.cf.url.detail,
+        urlInit: this.cf.url.detail,
         formItems: this.cf.formItems,
         btns: [
           { text: "修改", event: "submit", type: "primary" },
@@ -133,7 +138,6 @@ export default {
         } //传递参数
       })
         .then(response => {
-          
           this.$message({
             message: "修改产品成功",
             duration: 1500,

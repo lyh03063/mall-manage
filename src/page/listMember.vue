@@ -44,6 +44,7 @@ export default {
             width: 65,
             formatter: function(row) {
               return "******";
+
             }
           },
           {
@@ -51,6 +52,7 @@ export default {
             prop: "phone",
             width: 120
           },
+
           {
             label: "性别",
             prop: "sex",
@@ -64,6 +66,7 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
+<<<<<<< HEAD
             width: 160,
             formatter: function(date) {
               var dateee = new Date(date).toJSON();
@@ -71,6 +74,12 @@ export default {
                 .toISOString()
                 .replace(/T/g, " ")
                 .replace(/\.[\d]{3}Z/, "");
+=======
+            width: 140,
+            formatter: function(row) {
+              return "2019-06-18 10:32";
+
+>>>>>>> 6751b17f41fdfa592b09869e3084a763878bdbaa
             }
           }
         ],

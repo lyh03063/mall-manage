@@ -99,41 +99,39 @@ export default {
       });
     },
     //-------------确认删除产品的函数--------------
-    confirmDelete(proId) {
-      this.$confirm("确认删除该产品？", "提示", {
+    async confirmDelete(proId) {
+      let clickStatus = await this.$confirm("确认删除该产品？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
-          axios({
-            //请求接口
-            method: "post",
-            url: this.cf.url.delete,
-            data: {
-              findJson: {
-                //用于定位要修改的数据
-                P1: proId
-              }
-            } //传递参数
-          })
-            .then(response => {
-              this.$message({
-                message: "删除产品成功",
-                duration: 1500,
-                type: "success"
-              });
-              this.getProList(); //更新产品列表
-            })
-            .catch(function(error) {
-              alert("异常:" + error);
-            });
-        })
-        .catch(() => {});
+      }).catch(() => {});
+
+      if (clickStatus == "confirm") {
+        //用户点击了确认
+        await axios({
+          //请求接口
+          method: "post",
+          url: this.cf.url.delete,
+          data: {
+            findJson: {
+              //用于定位要修改的数据
+              P1: proId
+            }
+          } //传递参数
+        }).catch(function(error) {
+          alert("异常:" + error);
+        });
+
+        this.$message({
+          message: "删除产品成功",
+          duration: 1500,
+          type: "success"
+        });
+        this.getProList(); //更新产品列表
+      }
     },
     //-------------查询列表的函数--------------
     searchList() {
-   
       this.getProList(); //第一次加载此函数，页面才不会空
     },
 
@@ -149,19 +147,9 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: this.Objparma,
-        // data: {
-         
-        //   findJson: {
-        //     //用于定位要修改的数据
-        //     P1: this.Objparma.P1,
-        //     name: this.Objparma.name,
-        //     category: this.Objparma.category
-        //   }
-        // } //传递参数
+        data: this.Objparma
       })
         .then(response => {
-          console.log("第一次请求结果", response.data);
           let { list, page } = response.data; //解构赋值
           this.tableData = list;
           this.page = page;
