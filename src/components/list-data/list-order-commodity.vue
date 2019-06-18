@@ -6,16 +6,9 @@
       <el-breadcrumb-item :to="{ path: '/listOrder' }">订单列表</el-breadcrumb-item>
       <el-breadcrumb-item>订单详情</el-breadcrumb-item>
     </el-breadcrumb>
-    <space height="8"></space>
+    <space height="30"></space>
     <!--------------------------------新增按钮---------------------->
-    <el-row>
-      <el-button type="primary" v-if="false" size="small">新增</el-button>
-      <space height="20" v-else></space>
-    </el-row>
     订单用户:{{totalData.userName}}
-    <!-- <router-link to="/listOrder" icon="el-icon-notebook-2">
-      <el-button style="float:right">返回上一级</el-button>
-    </router-link>-->
     <space height="10"></space>
     <!------------------------------主列表--------------------------->
     <el-table
@@ -55,60 +48,9 @@
     <!-------------------------------分割线----------------------------------->
     <space height="8"></space>
     <table class="ordertable">
-      <tr>
-        <td>收货地址</td>
-
-        <td>{{totalData.postAddress.address}}</td>
-      </tr>
-
-      <tr>
-        <td>收货人电话</td>
-        <td>{{totalData.postAddress.phone}}</td>
-      </tr>
-
-      <tr>
-        <td>收货人</td>
-        <td>{{totalData.postAddress.name}}</td>
-      </tr>
-
-      <tr>
-        <td>订单创建时间</td>
-        <td>{{totalData.CreateTime | formatDate}}</td>
-      </tr>
-
-      <tr>
-        <td>订单修改时间</td>
-        <td>{{totalData.UpdateTime | formatDate}}</td>
-      </tr>
-
-      <tr>
-        <td>订单编号</td>
-        <td>{{totalData._id}}</td>
-      </tr>
-
-      <tr>
-        <td>订单状态</td>
-        <td>{{State}}</td>
-      </tr>
-
-      <tr>
-        <td>订单商品总数</td>
-        <td>{{totalCount}}</td>
-      </tr>
-
-      <tr>
-        <td>订单总价</td>
-        <td>{{totalMoney}}</td>
-      </tr>
-
-      <tr>
-        <td>运费</td>
-        <td>{{totalFreight}}</td>
-      </tr>
-
-      <tr>
-        <td>合计</td>
-        <td>{{allTotalMoney}}</td>
+      <tr v-for="item in tdData" :key="item.row">
+        <td>{{item.row}}</td>
+        <td>{{item.value}}</td>
       </tr>
     </table>
     <space height="8"></space>
@@ -116,11 +58,12 @@
     <el-form ref="form" v-model="form" label-width="80px">
       <el-form-item label="订单状态">
         <el-select placeholder="修改订单状态" v-model="form.region">
-          <el-option label="已下单,未付款" value="1"></el-option>
-          <el-option label="已付款,未发货" value="2"></el-option>
-          <el-option label="已发货" value="3"></el-option>
-          <el-option label="已完成" value="4"></el-option>
-          <el-option label="已取消" value="5"></el-option>
+          <el-option
+            v-for="item in statusArray"
+            :key="item.value"
+            :label="item.status"
+            :value="item.value"
+          ></el-option>
         </el-select>&nbsp;&nbsp;
         <el-button type="primary" @click="updateCommodityStatus">确认</el-button>
       </el-form-item>
@@ -151,18 +94,29 @@ export default {
       //   pageIndex: 1, //第1页
       //   pageSize: 10 //每页10条
       // },
-      form: {
-        region: ""
-      },
-      totalMoney: 0, //订单总金额
-      totalCount: 0, //订单商品总数量
-      totalFreight: 0, //订单总运费
-      totalData: {
-        postAddress: {}
-      }, //查询的数据列表
-      allTotalMoney: 0, //订单总金额+订单总运费=总金额
-      State: "", //单前订单状态
-      one: 0
+      statusArray: [
+        { status: "已下单,未付款", value: 1 },
+        { status: "已付款,未发货", value: 2 },
+        { status: "已发货", value: 3 },
+        { status: "已完成", value: 4 },
+        { status: "已取消", value: 5 }
+      ],
+      tdData:[
+        { row: "收货地址", value: 0 },
+        { row: "收货人电话", value: 0 },
+        { row: "收货人", value: 0 },
+        { row: "订单创建时间", value: 0 },
+        { row: "订单修改时间", value: 0 },
+        { row: "订单编号", value: 0 },
+        { row: "订单状态", value: 0 },
+        { row: "订单商品总数", value: 0 },
+        { row: "订单总价", value: 0 },
+        { row: "运费", value: 0 },
+        { row: "合计", value: 0 },
+      ],
+      form: { region: "" },
+      totalData:{},
+      State: "" //单前订单状态
     };
   },
   methods: {
@@ -180,39 +134,46 @@ export default {
           console.log("第一次请求结果", response.data);
           let { list } = response.data; //解构赋值
 
-          this.totalData = list[0];
-          console.log("this.totalData", this.totalData);
-          this.totalMoney = 0;
-          this.totalCount = 0;
-          this.totalFreight = 0;
+          this.totalData = list[0]
+          //初始化数据
+          this.tdData[8].value = 0;
+          this.tdData[7].value = 0;
+          this.tdData[9].value = 0;
+
+          this.tdData[0].value = this.totalData.postAddress.address
+          this.tdData[1].value = this.totalData.postAddress.phone
+          this.tdData[2].value = this.totalData.postAddress.name
+          this.tdData[3].value = this.totalData.CreateTime
+          this.tdData[4].value = this.totalData.UpdateTime
+          this.tdData[5].value = this.totalData._id
+          this.tdData[6].value = this.totalData.status 
 
           this.totalData.commodityList.forEach(commodityEach => {
             //订单总金额
-            this.totalMoney += commodityEach.price * commodityEach.byCount;
+            this.tdData[8].value += commodityEach.price * commodityEach.byCount;
             //订单的商品总数量
-            this.totalCount += parseInt(commodityEach.byCount);
+            this.tdData[7].value += parseInt(commodityEach.byCount);
             //订单运费totalFreight
-            this.totalFreight += parseInt(commodityEach.freight);
+            this.tdData[9].value += parseInt(commodityEach.freight);
           });
-          this.allTotalMoney = this.totalMoney + this.totalFreight;
+          this.tdData[10].value = this.tdData[8].value + this.tdData[9].value
 
-          if (this.totalData.status == 1) {
-            this.State = "已下单,未付款";
-          } else if (this.totalData.status == 2) {
-            this.State = "已付款,未发货";
-          } else if (this.totalData.status == 3) {
-            this.State = "已发货";
-          } else if (this.totalData.status == 4) {
-            this.State = "已完成";
-          } else if (this.totalData.status == 5) {
-            this.State = "已取消";
-          }
+          this.statusArray.forEach((element, index) => {
+            if (this.totalData.status == index) {
+              index--
+              this.tdData[6].value = this.statusArray[index].status;
+            }
+          });
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
     },
     updateCommodityStatus() {
+      if (this.form.region == "") {
+        this.$message.error("请先选择订单状态");
+        return;
+      }
       axios({
         //请求接口
         method: "post",
@@ -229,57 +190,18 @@ export default {
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
-
-          let table = [
-            { namu:"已下单,未付款",value:1 },
-            { namu:"已付款,未发货",value:2 },
-            { namu:"已发货",value:3 },
-            { namu:"已完成",value:4 },
-            { namu:"已取消",value:5 },           
-          ]
-
-          
-
-          if (code == 0) {
-            if (this.form.region == 1) {
+          this.statusArray.forEach((element, index) => {
+            if (this.form.region == index) {
+              this.tdData[6].value = this.statusArray[index].status;
               this.$message({
                 message: "修改状态订单成功",
                 type: "success"
               });
-              this.totalData.status = 1;
-              this.State = "已下单,未付款";
-            } else if (this.form.region == 2) {
-              this.$message({
-                message: "修改状态订单成功",
-                type: "success"
-              });
-              this.totalData.status = 2;
-              this.State = "已付款,未发货";
-            } else if (this.form.region == 3) {
-              this.$message({
-                message: "修改状态订单成功",
-                type: "success"
-              });
-              this.totalData.status = 3;
-              this.State = "已发货";
-            } else if (this.form.region == 4) {
-              this.$message({
-                message: "修改状态订单成功",
-                type: "success"
-              });
-              this.totalData.status = 4;
-              this.State = "已完成";
-            } else if (this.form.region == 5) {
-              this.$message({
-                message: "修改状态订单成功",
-                type: "success"
-              });
-              this.totalData.status = 5;
-              this.State = "已取消";
             }
-            this.form.region = "";
-            this.getOrder();
-          }
+          });
+
+          this.form.region = "";
+          this.getOrder();
         })
         .catch(function(error) {
           alert("异常:" + error);
@@ -318,17 +240,10 @@ export default {
             type: "success"
           });
           this.getOrder();
-          this.one++;
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
-    },
-  },
-  computed: {
-    row() {
-      //来自vuex的当前行数据
-      return this.$store.state.obj;
     }
   },
   activated() {

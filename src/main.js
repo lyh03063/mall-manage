@@ -76,8 +76,7 @@ const store = new Vuex.Store({//定义Vuex的存储对象
     activeMenuIndex: "",//当前激活的菜单index
     listState: {//存放列表的共享状态，
 
-    },
-    obj: {}
+    },   
   },
   mutations: {//变更事件
 
