@@ -41,9 +41,10 @@ export default {
           {
             label: "密码",
             prop: "password",
-            width: 70,
+            width: 65,
             formatter: function(row) {
-              return "*******";
+              return "******";
+
             }
           },
           {
@@ -65,9 +66,10 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
-            width: 120,
+            width: 140,
             formatter: function(row) {
-              return "CreateTime";
+              return "2019-06-18 10:32";
+
             }
           }
         ],
