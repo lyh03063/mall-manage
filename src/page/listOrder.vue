@@ -49,8 +49,13 @@ export default {
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
+           {
+            label: "用户名",
+            prop: "userName",
+            type: "input"
+          },
           {
-            label: "搜索订单",
+            label: "订单编号",
             prop: "P1",
             type: "input"
           },
