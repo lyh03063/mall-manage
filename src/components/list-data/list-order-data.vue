@@ -10,7 +10,7 @@
       @submit1="getOrderList"
       @submit2="resetField()"
       :cf="cfSearchForm"
-      :formData="Objparma"
+      :formData="Objparma.findJson"
     ></dynamicForm>
     <!------------主列表--------->
     <el-table
@@ -96,7 +96,7 @@ export default {
         findJson: {},
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
-        P1: ""
+       
       },
       tableData: [] //列表数据
     };
@@ -108,14 +108,7 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: {
-          pageSize: this.Objparma.pageSize,
-          pageIndex:this.Objparma.pageIndex,
-          findJson: {
-            P1: this.Objparma.P1,
-            status: this.Objparma.status
-          }
-        } //传递参数
+        data: this.Objparma
       })
         .then(response => {
           console.log("第一次请求结果", response.data);
@@ -152,8 +145,8 @@ export default {
     },
      //--------------点击取消初始化查询条件---------
     resetField() {
-      this.Objparma.status = ""
-      this.Objparma.P1 = ""
+      this.Objparma.findJson = {}
+      
       this.getOrderList();
     },
     //-------------处理分页变动函数--------------
