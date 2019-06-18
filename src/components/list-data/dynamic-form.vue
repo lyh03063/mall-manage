@@ -57,8 +57,8 @@
           <template v-if="item.handle">
             <!--文本框+自定义处理器-->
             <el-input
-              v-model="formData[item.prop+'__source']"
-              @input="item.handle(formData,item.prop,item.prop+'__source')"
+              v-model="formData_handle[item.prop]"
+              @input="item.handle(formData,item.prop,formData_handle[item.prop])"
             ></el-input>
           </template>
           <template v-else>
@@ -111,6 +111,7 @@ export default {
   },
   data() {
     return {
+      formData_handle: {},
       formData_Json: {},
      
       editorOption: {

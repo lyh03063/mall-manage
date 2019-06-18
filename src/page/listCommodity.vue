@@ -78,10 +78,10 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input",
-            handle(formData, propOrigin, propOperate) {
+            handle(formData, propOrigin,valHandle) {
               //处理器
               formData[propOrigin] = {
-                $regex: formData[propOperate],
+                $regex: valHandle,
                 $options: "i"
               };
             }
