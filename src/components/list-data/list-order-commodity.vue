@@ -7,10 +7,9 @@
       <el-breadcrumb-item>订单详情</el-breadcrumb-item>
     </el-breadcrumb>
     <space height="30"></space>
-    <!--------------------------------新增按钮---------------------->
     订单用户:{{totalData.userName}}
     <space height="10"></space>
-    <!------------------------------主列表--------------------------->
+    <!------------------------------商品明细表格--------------------------->
     <el-table
       :data="totalData.commodityList"
       :stripe="true"
@@ -18,11 +17,14 @@
       width="100%"
       size="medium"
     >
-      <el-table-column prop="P1" label="商品ID" width="100"></el-table-column>
-      <el-table-column prop="name" label="商品名称" width="200"></el-table-column>
-      <el-table-column prop="price" label="商品单价" width="100"></el-table-column>
-      <el-table-column prop="byCount" label="商品数量" width="100"></el-table-column>
-      <el-table-column prop="freight" label="运费" width="100"></el-table-column>
+      <el-table-column
+        v-for="column in columns"
+        :key="column.prop"
+        :prop="column.prop"
+        :label="column.label"
+        :width="column.width"
+      ></el-table-column>
+
       <el-table-column label="修改数量" width>
         <template slot-scope="scope">
           <el-button
@@ -45,7 +47,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-------------------------------分割线----------------------------------->
+    <!-------------------------------订单详细信息表格----------------------------------->
     <space height="8"></space>
     <table class="ordertable">
       <tr v-for="item in tdData" :key="item.row">
@@ -54,7 +56,7 @@
       </tr>
     </table>
     <space height="8"></space>
-
+    <!-------------------------------修改订单状态下拉框----------------------------------->
     <el-form ref="form" v-model="form" label-width="80px">
       <el-form-item label="订单状态">
         <el-select placeholder="修改订单状态" v-model="form.region">
@@ -70,7 +72,6 @@
     </el-form>
   </div>
 </template>
-
 
 <script>
 import Vue from "vue";
@@ -101,7 +102,7 @@ export default {
         { status: "已完成", value: 4 },
         { status: "已取消", value: 5 }
       ],
-      tdData:[
+      tdData: [
         { row: "收货地址", value: 0 },
         { row: "收货人电话", value: 0 },
         { row: "收货人", value: 0 },
@@ -112,11 +113,17 @@ export default {
         { row: "订单商品总数", value: 0 },
         { row: "订单总价", value: 0 },
         { row: "运费", value: 0 },
-        { row: "合计", value: 0 },
+        { row: "合计", value: 0 }
+      ],
+      columns: [
+        { label: "商品ID", prop: "P1", width: 100 },
+        { label: "商品名称", prop: "name", width: 200 },
+        { label: "商品单价", prop: "price", width: 100 },
+        { label: "商品数量", prop: "byCount", width: 100 },
+        { label: "运费", prop: "freight", width: 100 }
       ],
       form: { region: "" },
-      totalData:{},
-      State: "" //单前订单状态
+      totalData: {}
     };
   },
   methods: {
@@ -134,19 +141,19 @@ export default {
           console.log("第一次请求结果", response.data);
           let { list } = response.data; //解构赋值
 
-          this.totalData = list[0]
+          this.totalData = list[0];
           //初始化数据
           this.tdData[8].value = 0;
           this.tdData[7].value = 0;
           this.tdData[9].value = 0;
 
-          this.tdData[0].value = this.totalData.postAddress.address
-          this.tdData[1].value = this.totalData.postAddress.phone
-          this.tdData[2].value = this.totalData.postAddress.name
-          this.tdData[3].value = this.totalData.CreateTime
-          this.tdData[4].value = this.totalData.UpdateTime
-          this.tdData[5].value = this.totalData._id
-          this.tdData[6].value = this.totalData.status 
+          this.tdData[0].value = this.totalData.postAddress.address;
+          this.tdData[1].value = this.totalData.postAddress.phone;
+          this.tdData[2].value = this.totalData.postAddress.name;
+          this.tdData[3].value = this.formatter(this.totalData.CreateTime);
+          this.tdData[4].value = this.formatter(this.totalData.UpdateTime);
+          this.tdData[5].value = this.totalData._id;
+          this.tdData[6].value = this.totalData.status;
 
           this.totalData.commodityList.forEach(commodityEach => {
             //订单总金额
@@ -156,11 +163,10 @@ export default {
             //订单运费totalFreight
             this.tdData[9].value += parseInt(commodityEach.freight);
           });
-          this.tdData[10].value = this.tdData[8].value + this.tdData[9].value
+          this.tdData[10].value = this.tdData[8].value + this.tdData[9].value;
 
           this.statusArray.forEach((element, index) => {
-            if (this.totalData.status == index) {
-              index--
+            if (this.totalData.status == this.statusArray[index].value) {
               this.tdData[6].value = this.statusArray[index].status;
             }
           });
@@ -190,15 +196,6 @@ export default {
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { code, message } = response.data; //解构赋值
-          this.statusArray.forEach((element, index) => {
-            if (this.form.region == index) {
-              this.tdData[6].value = this.statusArray[index].status;
-              this.$message({
-                message: "修改状态订单成功",
-                type: "success"
-              });
-            }
-          });
 
           this.form.region = "";
           this.getOrder();
@@ -244,21 +241,17 @@ export default {
         .catch(function(error) {
           alert("异常:" + error);
         });
-    }
-  },
-  activated() {
-    this.getOrder();
-  },
-  filters: {
-    //过滤器
-    //时间戳转日期
-    formatDate(date) {
+    },
+    formatter(date) {
       var dateee = new Date(date).toJSON();
       return new Date(+new Date(dateee) + 8 * 3600 * 1000)
         .toISOString()
         .replace(/T/g, " ")
         .replace(/\.[\d]{3}Z/, "");
     }
+  },
+  activated() {
+    this.getOrder();
   }
 };
 </script>
