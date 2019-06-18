@@ -165,9 +165,13 @@ export default {
           });
           this.tdData[10].value = this.tdData[8].value + this.tdData[9].value;
 
+          if (this.tdData[9].value == 0) {
+            this.tdData[9].value = "免运费"
+          }
+
           this.statusArray.forEach((element, index) => {
-            if (this.totalData.status == this.statusArray[index].value) {
-              this.tdData[6].value = this.statusArray[index].status;
+            if (this.totalData.status == element.value) {
+              this.tdData[6].value = element.status;
             }
           });
         })
