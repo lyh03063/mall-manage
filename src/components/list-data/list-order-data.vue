@@ -46,6 +46,8 @@
         </template>
       </el-table-column>
     </el-table>
+        <space height="10"></space>
+
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
@@ -91,7 +93,7 @@ export default {
       allCount: null,
       //------------------ajax请求数据列表的传参对象--------------
       Objparma: {
-        status: "",
+        findJson: {},
         pageIndex: 1, //第1页
         pageSize: 10, //每页10条
         P1: ""
