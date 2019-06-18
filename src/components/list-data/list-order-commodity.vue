@@ -324,14 +324,6 @@ export default {
           alert("异常:" + error);
         });
     },
-    list() {
-      alert("触发了监听器");
-      api.apiDeviceDetail({
-        P1: this.$route.query.P1 // 需要传递的参数
-      }).then(res => {
-        console.log(res);
-      });
-    }
   },
   computed: {
     row() {
@@ -339,22 +331,8 @@ export default {
       return this.$store.state.obj;
     }
   },
-  watch: {
-    // one(newone,oldone) {
-    //    alert(newone)
-    //    alert(oldone)
-    //     deep: true //深度监听
-    // },
-    // one: {
-    // 　　handler(newName, oldName) {
-    //   　　alert(newName)
-    // 　　},
-    // 　　immediate: true
-    // }
-  },
   activated() {
     this.getOrder();
-    this.list()
   },
   filters: {
     //过滤器
