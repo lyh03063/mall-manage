@@ -44,6 +44,7 @@ export default {
             width: 65,
             formatter: function(row) {
               return "******";
+
             }
           },
           {
@@ -51,6 +52,7 @@ export default {
             prop: "phone",
             width: 120
           },
+
           {
             label: "性别",
             prop: "sex",
@@ -67,6 +69,7 @@ export default {
             width: 140,
             formatter: function(row) {
               return "2019-06-18 10:32";
+
             }
           }
         ],
