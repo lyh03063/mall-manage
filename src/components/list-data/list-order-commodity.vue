@@ -159,7 +159,10 @@ export default {
         postAddress: {}
       }, //查询的数据列表
       allTotalMoney: 0, //订单总金额+订单总运费=总金额
-      State: "" //单前订单状态
+      State: "", //单前订单状态
+      one:0
+
+
     };
   },
   methods: {
@@ -304,10 +307,14 @@ export default {
             type: "success"
           });
           this.getOrder();
+          this.one++
         })
         .catch(function(error) {
           alert("异常:" + error);
         });
+    },
+    list(){
+      alert("触发了监听器")
     }
   },
   computed: {
@@ -315,6 +322,23 @@ export default {
       //来自vuex的当前行数据
       return this.$store.state.obj;
     }
+  },
+   watch: {
+    // one(newone,oldone) {
+     
+        
+    //    alert(newone)
+    //    alert(oldone)  
+      
+    //     deep: true //深度监听
+    // },
+    // one: {
+    // 　　handler(newName, oldName) {
+    //   　　alert(newName)
+    // 　　},
+    // 　　immediate: true
+    // }
+  
   },
   activated() {
     this.getOrder();
