@@ -26,7 +26,7 @@ export default {
           {
             label: "商品id",
             prop: "P1",
-            width: 70
+            width: 80
           },
           {
             label: "商品名称",
@@ -53,19 +53,25 @@ export default {
             prop: "category",
             width: 70
           },
-          {
-            label: "图片",
-            prop: "album",
+           {
+            label: "属性",
+            prop: "prop",
+            width: 100
+          },
           
-            width: 120,
-            formatter1(row, column) {
-              console.log("row", row);
-              var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
-              //格式器
+          // {
+          //   label: "图片",
+          //   prop: "album",
+          
+          //   width: 120,
+          //   formatter1(row, column) {
+          //     console.log("row", row);
+          //     var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
+          //     //格式器
              
-              return `商品：${strAlbum}`;
-            }
-          }
+          //     return `商品：${strAlbum}`;
+          //   }
+          // }
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
@@ -78,10 +84,10 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input",
-            handle(formData, propOrigin, propOperate) {
+            handle(formData, propOrigin,valHandle) {
               //处理器
               formData[propOrigin] = {
-                $regex: formData[propOperate],
+                $regex: valHandle,
                 $options: "i"
               };
             }
@@ -137,6 +143,11 @@ export default {
           {
             label: "分类编号",
             prop: "category",
+            width: 100
+          },
+          {
+            label: "属性",
+            prop: "prop",
             width: 100
           },
           {
@@ -200,7 +211,12 @@ export default {
             label: "其他数据",
             prop: "extend",
              type: "vueJsonEditor"
-          }
+          },
+           {
+            label: "属性",
+            prop: "prop",
+             type: "vueJsonEditor"
+          },
         ]
       }
     };
