@@ -28,7 +28,7 @@
       :header-cell-style="{padding:'6px'}"
       style="width: 100%;"
     >
-      <el-table-column label="id" prop="P1" :width="60" type="selection"></el-table-column>
+      <el-table-column label="id" prop="P1" :width="40" type="selection"></el-table-column>
       <el-table-column
         :prop="column.prop"
         :label="column.label"

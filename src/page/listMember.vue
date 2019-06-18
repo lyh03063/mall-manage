@@ -26,32 +26,36 @@ export default {
           {
             label: "Id",
             prop: "P1",
-            width: 100
+            width: 60
           },
           {
-            label: "用户名",   
+            label: "用户名",
             prop: "userName",
-            width: 100
-          },
-          {
-            label: "密码",
-            prop: "password",
-            width: 100
-          },
-          {
-            label: "手机号",
-            prop: "phone",
-            width: 100
+            width: 120
           },
           {
             label: "呢称",
             prop: "nickName",
-            width: 100
+            width: 150
           },
+          {
+            label: "密码",
+            prop: "password",
+            width: 70,
+            formatter: function(row) {
+              return "*******";
+            }
+          },
+          {
+            label: "手机号",
+            prop: "phone",
+            width: 120
+          },
+
           {
             label: "性别",
             prop: "sex",
-            width: 100
+            width: 65
           },
           {
             label: "生日",
@@ -61,7 +65,10 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
-            width: 100
+            width: 120,
+            formatter: function(row) {
+              return "CreateTime";
+            }
           }
         ],
         //-------筛选表单字段数组-------
@@ -71,12 +78,11 @@ export default {
             prop: "P1",
             type: "input"
           },
-           {
+          {
             label: "昵称",
             prop: "nickName",
             type: "input"
           }
-
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -120,31 +126,32 @@ export default {
             prop: "userName",
             type: "input"
           },
-           {
+          {
             label: "密码",
             prop: "password",
             type: "input"
           },
-           {
+          {
             label: "手机号",
             prop: "phone",
             type: "input"
           },
-           {
+          {
             label: "呢称",
             prop: "nickName",
             type: "input"
           },
-           {
+          {
             label: "性别",
             prop: "sex",
             type: "input"
-          }, {
+          },
+          {
             label: "生日",
             prop: "birthday",
             type: "input"
           },
-           {
+          {
             label: "创建时间",
             prop: "CreateTime",
             type: "input"
