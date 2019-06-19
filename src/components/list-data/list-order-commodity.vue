@@ -25,6 +25,14 @@
         :width="column.width"
       ></el-table-column>
 
+      <el-table-column
+        v-for="item in totalData.extend.prop"
+        :key="item.title"
+        :prop="item.title"
+        :label="item.title"
+        width="100"
+      >{{item.option}}</el-table-column>
+
       <el-table-column label="修改数量" width>
         <template slot-scope="scope">
           <el-button
@@ -166,7 +174,7 @@ export default {
           this.tdData[10].value = this.tdData[8].value + this.tdData[9].value;
 
           if (this.tdData[9].value == 0) {
-            this.tdData[9].value = "免运费"
+            this.tdData[9].value = "免运费";
           }
 
           this.statusArray.forEach((element, index) => {
