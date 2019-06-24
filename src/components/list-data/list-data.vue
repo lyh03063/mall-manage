@@ -72,11 +72,15 @@
       style="float:right;margin:10px 0 0 0;"
     ></el-pagination>
     <listDialogs ref="listDialogs" :cf="cf">
+      <template v-slot:[item.slot]="{row}" v-for="item in cf.detailItems">
+        <!--根据cf.detailItems循环输出插槽--详情弹窗-->
+        <slot :name="item.slot" :row="row" v-if="item.slot"></slot>
+      </template>
 
- 
-      <template v-slot:[item.slot]="{row}"  v-for="item in cf.detailItems">
-        <!--根据cf.detailItems循环输出插槽-->
-        <slot :name="item.slot" :row="row" v-if="item.slot" ></slot>
+      <!--这里的for循环的item不要跟上面的重名，否则冲突！！！所以使用formItem-->
+      <template v-slot:[formItem.slot]="{formData}" v-for="formItem in cf.formItems">
+        <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
+        <slot :name="formItem.slot" :formData="formData" v-if="formItem.slot"></slot>
       </template>
 
       <!--列表用到的各种弹窗-->

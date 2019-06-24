@@ -32,13 +32,21 @@
       <template v-slot:slot_detail_item_description="{row}">
         <div class="FWB C_f30" @click="print(row.description)">{{row.description}}</div>
       </template>
+
+      <!--弹窗表单的description字段插槽组件-->
+      <template v-slot:slot_form_item_description="{formData}">
+        <form_item_test class="" v-model="formData.description" ></form_item_test>
+      </template>
+
     </listData>
   </div>
 </template>
 <script>
 import listData from "../components/list-data/list-data.vue";
+import form_item_test from "../components/form_item_test.vue";
+
 export default {
-  components: { listData },
+  components: { listData,form_item_test },
   methods: {
     showBigImg(url) {
       this.showDialogBigImg = true;
@@ -220,7 +228,8 @@ export default {
           {
             label: "商品简介",
             prop: "description",
-            type: "input"
+            type: "input",
+            slot: "slot_form_item_description"
           },
           {
             label: "商品详情",

@@ -41,7 +41,12 @@
         :cf="cfFormAdd"
         @submit="addProduct"
         @cancel="closeDialogAddFun"
-      ></dynamicForm>
+      >
+        <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
+          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
+          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
+        </template>
+      </dynamicForm>
     </el-dialog>
 
     <!--修改数据表单弹窗-->
@@ -56,7 +61,12 @@
         :cf="cfFormModify"
         @submit="modifyProduct"
         @cancel="isShowDialogModify = false"
-      ></dynamicForm>
+      >
+        <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
+          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
+          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
+        </template>
+      </dynamicForm>
     </el-dialog>
   </div>
 </template>

@@ -2,8 +2,10 @@
   <el-form ref="form" :model="formData" label-width="80px" size="small" :inline="cf.inline">
     <template v-for="item in cf.formItems">
       <el-form-item :label="item.label" v-if="!item.forbidAdd" :key="item.prop">
+        <!--slot自定义组件-->
+        <slot :name="item.slot" :formData="formData" v-if="item.slot" ></slot>
         <!--下拉框-->
-        <el-select v-model="formData[item.prop]" v-if="item.type=='select'">
+        <el-select v-model="formData[item.prop]" v-else-if="item.type=='select'">
           <el-option label="请选择" value></el-option>
           <el-option
             :label="option.label"
