@@ -15,7 +15,7 @@
         <!--单选框-->
         <el-radio-group v-model="formData[item.prop]" v-else-if="item.type=='radio'">
           <el-radio
-            :label="option.value"
+            :label="option.label"
             :value="option.value"
             v-for="option in item.options"
             :key="option.value"
@@ -24,7 +24,7 @@
         <!--复选框-->
         <el-checkbox-group v-model="formData[item.prop]" v-else-if="item.type=='checkbox'">
           <el-checkbox
-            :label="option.value"
+            :label="option.label"
             :value="option.value"
             v-for="option in item.options"
             :key="option.value"
@@ -32,6 +32,13 @@
         </el-checkbox-group>
         <!--文本域-->
         <el-input type="textarea" v-model="formData[item.prop]" v-else-if="item.type=='textarea'"></el-input>
+        <!--date日期选择-->
+      <el-date-picker
+     v-model="formData[item.prop]" 
+      align="right"
+      type="date"
+      placeholder="选择日期"
+     v-else-if="item.type=='date'"> </el-date-picker>
         <!--如果是vue-json编辑器-->
         <vue-json-editor
           v-model="formData[item.prop]"

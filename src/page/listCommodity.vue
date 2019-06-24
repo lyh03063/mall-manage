@@ -1,13 +1,24 @@
 <template>
   <div class>
-    <listData :cf="cfList"></listData>
+    <el-button plain @click="test" size="mini">test</el-button>
+    <listData :cf="cfList">
+      <template v-slot:slot_detail_item_description="data">
+        {{data.data}}----我的listCommodity传过来的组件hh
+        <el-button plain @click="test" size="mini">test</el-button>
+      </template>
+      
+    </listData>
   </div>
 </template>
 <script>
-
 import listData from "../components/list-data/list-data.vue";
 export default {
-  components: { listData},
+  components: { listData },
+  methods: {
+    test() {
+      alert("test");
+    }
+  },
   data() {
     return {
       cfList: {
@@ -53,22 +64,22 @@ export default {
             prop: "category",
             width: 70
           },
-           {
+          {
             label: "属性",
             prop: "prop",
             width: 100
-          },
-          
+          }
+
           // {
           //   label: "图片",
           //   prop: "album",
-          
+
           //   width: 120,
           //   formatter1(row, column) {
           //     console.log("row", row);
           //     var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
           //     //格式器
-             
+
           //     return `商品：${strAlbum}`;
           //   }
           // }
@@ -84,7 +95,7 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input",
-            handle(formData, propOrigin,valHandle) {
+            handle(formData, propOrigin, valHandle) {
               //处理器
               formData[propOrigin] = {
                 $regex: valHandle,
@@ -109,6 +120,7 @@ export default {
             label: "商品名称",
             prop: "name",
             width: 100,
+            // slot: true,
             formatter(row) {
               //自定义格式
 
@@ -118,7 +130,8 @@ export default {
           {
             label: "商品简介",
             prop: "description",
-            width: 100
+            width: 100,
+            slot: true
           },
           {
             label: "商品详情",
@@ -161,7 +174,7 @@ export default {
                 //如果相册数组存在
                 row.album.forEach(albumEach => {
                   //循环：{相册数组}
-                  htmlResult += `<img class="F1 W100 H100" src="${
+                  htmlResult += `<img  class="F1 W100 H100" src="${
                     albumEach.url
                   }" alt="" >`;
                 });
@@ -205,18 +218,18 @@ export default {
           {
             label: "图片",
             prop: "album",
-             type: "vueJsonEditor"
+            type: "vueJsonEditor"
           },
           {
             label: "其他数据",
             prop: "extend",
-             type: "vueJsonEditor"
+            type: "vueJsonEditor"
           },
-           {
+          {
             label: "属性",
             prop: "prop",
-             type: "vueJsonEditor"
-          },
+            type: "vueJsonEditor"
+          }
         ]
       }
     };
