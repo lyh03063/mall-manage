@@ -65,11 +65,6 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
-<<<<<<< HEAD
-            width: 140,
-            formatter: function(row) {
-              return "2019-06-18 10:32";
-=======
             width: 160,
             formatter: function(date) {
               var dateee = new Date(date).toJSON();
@@ -77,7 +72,6 @@ export default {
                 .toISOString()
                 .replace(/T/g, " ")
                 .replace(/\.[\d]{3}Z/, "");
->>>>>>> d058f7014ed6510381bc2282ea4b756aee3b4bd7
             }
           }
         ],
