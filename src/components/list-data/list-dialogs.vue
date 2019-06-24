@@ -14,7 +14,7 @@
             <!--如果是slot-->
             <!-- <slot :name="'slot_detail_item_'+item.prop" v-if="item.slot" ></slot> -->
 
-            <slot name="pane" :data="row" v-if="item.slot"></slot>
+            <slot :name="item.slot" :row="row" v-if="item.slot"></slot>
 
             <!--如果该字段带有formatter,使用formatter返回的代码输出-->
             <div v-else-if="item.formatter" v-html="item.formatter(row)"></div>

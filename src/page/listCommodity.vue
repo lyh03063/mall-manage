@@ -1,12 +1,37 @@
 <template>
   <div class>
-    <el-button plain @click="test" size="mini">test</el-button>
+    <!--显示大图弹窗-->
+    <el-dialog
+      custom-class="n-el-dialog"
+      width="75%"
+      title="显示大图"
+      :close-on-press-escape="false"
+      v-bind:visible.sync="showDialogBigImg"
+      v-if="showDialogBigImg"
+    >
+      <div class="TAC">
+        <img :src="urlBigImg" alt>
+      </div>
+    </el-dialog>
+
     <listData :cf="cfList">
-      <template v-slot:slot_detail_item_description="data">
-        {{data.data}}----我的listCommodity传过来的组件hh
-        <el-button plain @click="test" size="mini">test</el-button>
+      <!--详情弹窗的album字段组件，注意插槽命名-->
+      <template v-slot:slot_detail_item_album="{row}">
+        <div class v-if="row.album && row.album.length">
+          <img
+            @click="showBigImg(item.url)"
+            :src="item.url"
+            alt
+            v-for="item in row.album"
+            :key="item.url"
+            class="W100 H100"
+          >
+        </div>
       </template>
-      
+      <!--详情弹窗的description字段组件，注意插槽命名-->
+      <template v-slot:slot_detail_item_description="{row}">
+        <div class="FWB C_f30" @click="print(row.description)">{{row.description}}</div>
+      </template>
     </listData>
   </div>
 </template>
@@ -15,12 +40,18 @@ import listData from "../components/list-data/list-data.vue";
 export default {
   components: { listData },
   methods: {
-    test() {
-      alert("test");
+    showBigImg(url) {
+      this.showDialogBigImg = true;
+      this.urlBigImg = url;
+    },
+    print(text) {
+      alert(text);
     }
   },
   data() {
     return {
+      showDialogBigImg: false, //是否显示大图弹窗
+      urlBigImg: "", //大图地址
       cfList: {
         listIndex: "listProduct", //vuex对应的字段
         twoTitle: "商品中心",
@@ -120,19 +151,13 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            width: 100,
-            // slot: true,
-            formatter(row) {
-              //自定义格式
-
-              return `<b>${row.name}</b>`;
-            }
+            width: 100
           },
           {
             label: "商品简介",
             prop: "description",
             width: 100,
-            slot: true
+            slot: "slot_detail_item_description"
           },
           {
             label: "商品详情",
@@ -168,20 +193,21 @@ export default {
             label: "图片",
             prop: "album",
             width: 100,
-            formatter(row) {
-              //自定义格式
-              let htmlResult = ""; //需要拼装的html代码
-              if (row.album && row.album.length) {
-                //如果相册数组存在
-                row.album.forEach(albumEach => {
-                  //循环：{相册数组}
-                  htmlResult += `<img  class="F1 W100 H100" src="${
-                    albumEach.url
-                  }" alt="" >`;
-                });
-              }
-              return htmlResult;
-            }
+            slot: "slot_detail_item_album"
+            //   formatter(row) {
+            //     //自定义格式
+            //     let htmlResult = ""; //需要拼装的html代码
+            //     if (row.album && row.album.length) {
+            //       //如果相册数组存在
+            //       row.album.forEach(albumEach => {
+            //         //循环：{相册数组}
+            //         htmlResult += `<img  class="F1 W100 H100" src="${
+            //           albumEach.url
+            //         }" alt="" >`;
+            //       });
+            //     }
+            //     return htmlResult;
+            //   }
           }
         ],
         //-------新增、修改表单字段数组-------
