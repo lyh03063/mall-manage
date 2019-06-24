@@ -11,8 +11,12 @@
         <tr v-for="item in cf.detailItems" :key="item.prop">
           <td class="W100">{{item.label}}</td>
           <td>
+            <!--如果是slot-->
+            <!-- <slot :name="'slot_detail_item_'+item.prop" v-if="item.slot" ></slot> -->
+
+            <slot :name="item.slot" :row="row" v-if="item.slot"></slot>
             <!--如果该字段带有formatter,使用formatter返回的代码输出-->
-            <div v-if="item.formatter" v-html="item.formatter(row)"></div>
+            <div v-else-if="item.formatter" v-html="item.formatter(row)"></div>
             <!--否则如果该字段带type是html，使用html原文输出-->
             <div v-else-if="item.type=='html'" v-html="row[item.prop]"></div>
             <!--否则，正常输出-->

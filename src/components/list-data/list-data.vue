@@ -72,8 +72,16 @@
       style="float:right;margin:10px 0 0 0;"
     ></el-pagination>
     <listDialogs ref="listDialogs" :cf="cf">
+
+ 
+      <template v-slot:[item.slot]="{row}"  v-for="item in cf.detailItems">
+        <!--根据cf.detailItems循环输出插槽-->
+        <slot :name="item.slot" :row="row" v-if="item.slot" ></slot>
+      </template>
+
       <!--列表用到的各种弹窗-->
     </listDialogs>
+    <div class></div>
   </div>
 </template>
 <script>
