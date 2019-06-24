@@ -11,9 +11,9 @@ export default {
   data() {
     return {
       cfList: {
-        listIndex: "listCategory", //vuex对应的字段
+        listIndex: "listMember", //vuex对应的字段
         twoTitle: "会员/订单",
-        threeTitle: "订单详情",
+        threeTitle: "会员中心",
         flag: true,
         url: {
           list: "http://120.76.160.41:3000/crossList?page=mabang-member", //列表接口
@@ -44,7 +44,6 @@ export default {
             width: 65,
             formatter: function(row) {
               return "******";
-
             }
           },
           {
@@ -66,10 +65,13 @@ export default {
           {
             label: "创建时间",
             prop: "CreateTime",
-            width: 140,
-            formatter: function(row) {
-              return "2019-06-18 10:32";
-
+            width: 160,
+            formatter: function(date) {
+              var dateee = new Date(date).toJSON();
+              return new Date(+new Date(dateee) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "");
             }
           }
         ],
@@ -97,6 +99,10 @@ export default {
             prop: "userName"
           },
           {
+            label: "呢称",
+            prop: "nickName"
+          },
+          {
             label: "密码",
             prop: "password"
           },
@@ -104,10 +110,7 @@ export default {
             label: "手机号",
             prop: "phone"
           },
-          {
-            label: "呢称",
-            prop: "nickName"
-          },
+
           {
             label: "性别",
             prop: "sex"
@@ -129,6 +132,11 @@ export default {
             type: "input"
           },
           {
+            label: "呢称",
+            prop: "nickName",
+            type: "input"
+          },
+          {
             label: "密码",
             prop: "password",
             type: "input"
@@ -138,11 +146,7 @@ export default {
             prop: "phone",
             type: "input"
           },
-          {
-            label: "呢称",
-            prop: "nickName",
-            type: "input"
-          },
+
           {
             label: "性别",
             prop: "sex",

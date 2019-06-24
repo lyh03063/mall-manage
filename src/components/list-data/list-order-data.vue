@@ -10,9 +10,9 @@
       @submit1="getOrderList"
       @submit2="resetField()"
       :cf="cfSearchForm"
-      :formData="Objparma"
+      :formData="Objparma.findJson"
     ></dynamicForm>
-    <!------------主列表--------->
+    <!------------------------主列表------------------->
     <el-table
       :data="tableData"
       border
@@ -30,7 +30,7 @@
         :key="column.prop"
         :formatter="column.formatter"
       ></el-table-column>
-
+      <!------------------------查看详情按钮------------------->
       <el-table-column label="查看订单详情" width>
         <template slot-scope="scope">
           <router-link :to="'/listOrderCommodity?P1=' + scope.row.P1">
@@ -46,6 +46,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <space height="10"></space>
+
     <el-pagination
       background
       layout="total, sizes, prev, pager, next, jumper"
@@ -91,12 +93,20 @@ export default {
       allCount: null,
       //------------------ajax请求数据列表的传参对象--------------
       Objparma: {
-        status: "",
+        findJson: {},
         pageIndex: 1, //第1页
-        pageSize: 10, //每页10条
-        P1: ""
+        pageSize: 10 //每页10条
       },
-      tableData: [] //列表数据
+      tableData: [
+        {status:""}
+      ], //列表数据
+      statusArray: [
+        { status: "已下单,未付款", value: 1 },
+        { status: "已付款,未发货", value: 2 },
+        { status: "已发货", value: 3 },
+        { status: "已完成", value: 4 },
+        { status: "已取消", value: 5 }
+      ]
     };
   },
   methods: {
@@ -106,82 +116,57 @@ export default {
         //请求接口
         method: "post",
         url: this.cf.url.list,
-        data: {
-          pageSize: this.Objparma.pageSize,
-          pageIndex:this.Objparma.pageIndex,
-          findJson: {
-            P1: this.Objparma.P1,
-            status: this.Objparma.status
-          }
-        } //传递参数
+        data: this.Objparma
       })
         .then(response => {
           console.log("第一次请求结果", response.data);
           let { list, page } = response.data; //解构赋值
-           this.tableData = list;
-           this.page = page;
-           this.allCount = page.allCount; //更改总数据量
-           //alert(JSON.stringify(this.tableData))
-          
-           var i = 0;
-          //第一重循环订单列表
-          for (let index = 0; index < this.tableData.length; index++) {
-            //判断状态,给对应的状态重新赋值回显
-            if (this.tableData[i].status == 1) {
-              //判断
-              this.tableData[i].state = "已下单,未付款";
-            } else if (this.tableData[i].status == 2) {
-              this.tableData[i].state = "已付款,未发货";
-            } else if (this.tableData[i].status == 3) {
-              this.tableData[i].state = "已发货";
-            } else if (this.tableData[i].status == 4) {
-              this.tableData[i].state = "已完成";
-            } else if (this.tableData[i].status == 5) {
-              this.tableData[i].state = "已取消";
-            } else {
-              this.tableData[i].state = "未知状态";
-            }
-            i++;
-          }
+          this.tableData = list;
+          this.page = page;
+          this.allCount = page.allCount; //更改总数据量
+
+          this.tableData.forEach(tableDataEach => {
+             this.statusArray.forEach((statusArrayEach, index) => {
+              if (tableDataEach.status == statusArrayEach.value) {
+                tableDataEach.state = statusArrayEach.status;
+              }
+            });
+          });
         })
         .catch(function(error) {
           alert("异常:" + error);
-        })
+        });
     },
-     //--------------点击取消初始化查询条件---------
+    //--------------点击取消初始化查询条件---------
     resetField() {
-      this.Objparma.status = ""
-      this.Objparma.P1 = ""
+      this.Objparma.findJson = {};
+
       this.getOrderList();
     },
     //-------------处理分页变动函数--------------
     handleCurrentChange(pageIndex) {
       this.Objparma.pageIndex = pageIndex; //改变ajax传参的第几页
       this.getOrderList(); //点击切换页调用查询函数
-    },    
+    },
     //-------------------------修改下拉框的值改变事件函数-------------------------
     changePageSize(pageSize) {
       this.Objparma.pageSize = pageSize; //改变的每页的数据量
       this.getOrderList(); //调用获取产品列表的函数
-    },
+    }
   },
   created() {
-    
     let objState = {
       //列表的vuex初始状态对象
       isShowDialogAdd: false, //是否显示新增弹窗
       isShowDialogDetail: false, //是否显示详情弹窗
       row: {} //当前查看详情的行数据
     };
-
     this.$store.commit("initListState", {
       //改变列表的初始状态值
       listIndex: this.cf.listIndex,
       objState: objState
     });
-
     this.$store.commit("changeActiveMenu", this.cf.listIndex); //菜单聚焦
-
     if (localStorage.isLogin != "1") {
       //如果未登录
       this.$router.push({ path: "/login" }); //跳转到登录页
