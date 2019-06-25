@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="formData" label-width="80px" size="small" :inline="cf.inline">
+  <el-form ref="form" :model="formData" :label-width="cf.labelWidth||'80px'" size="small" :inline="cf.inline">
     <template v-for="item in cf.formItems">
       <el-form-item :label="item.label" v-if="!item.forbidAdd" :key="item.prop">
         <!--slot自定义组件-->
@@ -133,13 +133,11 @@ export default {
     return {
       formData_handle: {},
       formData_Json: {},
-
       editorOption: {
         //编辑器的配置
         modules: {
           toolbar: [
             ["bold", "italic", "underline", "strike"],
-
             ["link", "image", "video"]
           ]
         }

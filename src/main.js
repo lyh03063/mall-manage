@@ -30,7 +30,7 @@ import list_wxd from "./page/list_wxd";
 import list_xql from "./page/list_xql";
 import list_zjw from "./page/list_zjw";
 import list_zsr from "./page/list_zsr";
-
+import dynamic_form_demo from "./page/dynamic_form_demo";
 window.util=util;
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -110,6 +110,10 @@ const router = new VueRouter({
         {
           path: '/list_zsr',
           component: list_zsr
+        },
+        {
+          path: '/dynamic_form_demo',
+          component: dynamic_form_demo
         },
         {
           path: '/listOrder',
