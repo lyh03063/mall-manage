@@ -106,7 +106,8 @@ export default {
         { status: "已发货", value: 3 },
         { status: "已完成", value: 4 },
         { status: "已取消", value: 5 }
-      ]
+      ],
+      
     };
   },
   methods: {
@@ -124,7 +125,6 @@ export default {
           this.tableData = list;
           this.page = page;
           this.allCount = page.allCount; //更改总数据量
-
           this.tableData.forEach(tableDataEach => {
              this.statusArray.forEach((statusArrayEach, index) => {
               if (tableDataEach.status == statusArrayEach.value) {
@@ -152,7 +152,7 @@ export default {
     changePageSize(pageSize) {
       this.Objparma.pageSize = pageSize; //改变的每页的数据量
       this.getOrderList(); //调用获取产品列表的函数
-    }
+    },
   },
   created() {
     let objState = {
@@ -185,10 +185,9 @@ export default {
         .replace(/T/g, " ")
         .replace(/\.[\d]{3}Z/, "");
     }
-  }
+  },
 };
 </script>
-
 
 <style>
 </style>
