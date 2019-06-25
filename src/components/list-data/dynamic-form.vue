@@ -3,17 +3,28 @@
     <template v-for="item in cf.formItems">
       <el-form-item :label="item.label" v-if="!item.forbidAdd" :key="item.prop">
         <!--slot自定义组件-->
-        <slot :name="item.slot" :formData="formData" v-if="item.slot" ></slot>
+        <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
         <!--下拉框-->
-        <el-select v-model="formData[item.prop]" v-else-if="item.type=='select'">
-          <el-option label="请选择" value></el-option>
-          <el-option
-            :label="option.label"
-            :value="option.value"
-            v-for="option in item.options"
-            :key="option.value"
-          ></el-option>
-        </el-select>
+        <div class v-else-if="item.type=='select'">
+          <form_item_select_ajax
+            class
+            v-model="formData.category"
+            :keyLabel="item.ajax.keyLabel"
+            :keyValue="item.ajax.keyValue"
+            :ajaxUrl="item.ajax.url"
+            v-if="item.ajax"
+          ></form_item_select_ajax>
+          <el-select v-model="formData[item.prop]" v-else>
+            <el-option label="请选择" value></el-option>
+            <el-option
+              :label="option.label"
+              :value="option.value"
+              v-for="option in item.options"
+              :key="option.value"
+            ></el-option>
+          </el-select>
+        </div>
+
         <!--单选框-->
         <el-radio-group v-model="formData[item.prop]" v-else-if="item.type=='radio'">
           <el-radio
@@ -35,18 +46,17 @@
         <!--文本域-->
         <el-input type="textarea" v-model="formData[item.prop]" v-else-if="item.type=='textarea'"></el-input>
         <!--date日期选择-->
-      <el-date-picker
-     v-model="formData[item.prop]" 
-      align="right"
-      type="date"
-      placeholder="选择日期"
-     v-else-if="item.type=='date'"> </el-date-picker>
+        <el-date-picker
+          v-model="formData[item.prop]"
+          align="right"
+          type="date"
+          placeholder="选择日期"
+          v-else-if="item.type=='date'"
+        ></el-date-picker>
         <!--如果是vue-json编辑器-->
         <vue-json-editor
           v-model="formData[item.prop]"
-         
           v-else-if="item.type=='vueJsonEditor'"
-        
           lang="zh"
         ></vue-json-editor>
         <!--如果是普通json编辑器-->
@@ -97,11 +107,12 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import vueJsonEditor from "vue-json-editor";
+import form_item_select_ajax from "../form_item_select_ajax.vue";
 export default {
   components: {
     //注册组件
     quillEditor,
-    vueJsonEditor
+    vueJsonEditor,form_item_select_ajax
   },
 
   props: {
@@ -122,7 +133,7 @@ export default {
     return {
       formData_handle: {},
       formData_Json: {},
-     
+
       editorOption: {
         //编辑器的配置
         modules: {

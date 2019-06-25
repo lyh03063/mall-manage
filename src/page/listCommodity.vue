@@ -37,25 +37,16 @@
       <template v-slot:slot_form_item_description="{formData}">
         <form_item_test class v-model="formData.description"></form_item_test>
       </template>
-      <!--弹窗表单的category字段插槽组件-->
-      <template v-slot:slot_form_item_category="{formData}">
-        <form_item_select_ajax
-          class
-          v-model="formData.category"
-          keyLabel="nickName"
-          keyValue="userName"
-          ajaxUrl="http://120.76.160.41:3000/crossList?page=mabang-member"
-        ></form_item_select_ajax>
-      </template>
+     
     </listData>
   </div>
 </template>
 <script>
 import listData from "../components/list-data/list-data.vue";
 import form_item_test from "../components/form_item_test.vue";
-import form_item_select_ajax from "../components/form_item_select_ajax.vue";
+
 export default {
-  components: { listData, form_item_test, form_item_select_ajax },
+  components: { listData, form_item_test},
   methods: {
     showBigImg(url) {
       this.showDialogBigImg = true;
@@ -224,18 +215,11 @@ export default {
             label: "商品分类",
             prop: "category",
             type: "select",
-            slot: "slot_form_item_category",
-
-            options: [
-              {
-                label: "选项1",
-                value: 1
-              },
-              {
-                label: "选项2",
-                value: 2
-              }
-            ]
+            ajax: {
+              url: "http://120.76.160.41:3000/crossList?page=mabang-category",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
           },
           {
             label: "商品简介",
@@ -246,7 +230,12 @@ export default {
           {
             label: "商品详情",
             prop: "detail",
-            type: "input"
+            type: "select",
+             ajax: {
+              url: "http://120.76.160.41:3000/crossList?page=mabang-member",
+              keyLabel: "nickName",
+              keyValue: "userName"
+            },
           },
           {
             label: "价格",
