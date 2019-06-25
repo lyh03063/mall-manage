@@ -25,6 +25,14 @@
         :width="column.width"
       ></el-table-column>
 
+      <el-table-column
+        v-for="item in totalData.extend.prop"
+        :key="item.title"
+        :prop="item.title"
+        :label="item.title"
+        width="100"
+      >{{item.option}}</el-table-column>
+
       <el-table-column label="修改数量" width>
         <template slot-scope="scope">
           <el-button
@@ -70,6 +78,7 @@
         <el-button type="primary" @click="updateCommodityStatus">确认</el-button>
       </el-form-item>
     </el-form>
+     
   </div>
 </template>
 
@@ -78,7 +87,7 @@ import Vue from "vue";
 
 import listDialogs from "./list-dialogs";
 import { ALPN_ENABLED } from "constants";
-import { all } from "q";
+import { all, allSettled, allResolved } from "q";
 export default {
   components: { listDialogs }, //注册组件
 
@@ -123,7 +132,8 @@ export default {
         { label: "运费", prop: "freight", width: 100 }
       ],
       form: { region: "" },
-      totalData: {}
+      totalData: {},
+     
     };
   },
   methods: {
@@ -166,7 +176,7 @@ export default {
           this.tdData[10].value = this.tdData[8].value + this.tdData[9].value;
 
           if (this.tdData[9].value == 0) {
-            this.tdData[9].value = "免运费"
+            this.tdData[9].value = "免运费";
           }
 
           this.statusArray.forEach((element, index) => {
@@ -252,11 +262,12 @@ export default {
         .toISOString()
         .replace(/T/g, " ")
         .replace(/\.[\d]{3}Z/, "");
-    }
+    },
+    
   },
   activated() {
     this.getOrder();
-  }
+  },
 };
 </script>
 <style scoped>
