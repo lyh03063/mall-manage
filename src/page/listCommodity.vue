@@ -37,6 +37,10 @@
       <template v-slot:slot_form_item_description="{formData}">
         <form_item_test class="" v-model="formData.description" ></form_item_test>
       </template>
+      <!--弹窗表单的category字段插槽组件-->
+      <template v-slot:slot_form_item_category="{formData}">
+        <form_item_select_ajax class="" v-model="formData.category" ></form_item_select_ajax>
+      </template>
 
     </listData>
   </div>
@@ -44,9 +48,9 @@
 <script>
 import listData from "../components/list-data/list-data.vue";
 import form_item_test from "../components/form_item_test.vue";
-
+import form_item_select_ajax from "../components/form_item_select_ajax.vue";
 export default {
-  components: { listData,form_item_test },
+  components: { listData,form_item_test,form_item_select_ajax },
   methods: {
     showBigImg(url) {
       this.showDialogBigImg = true;
@@ -110,19 +114,7 @@ export default {
             width: 100
           }
 
-          // {
-          //   label: "图片",
-          //   prop: "album",
-
-          //   width: 120,
-          //   formatter1(row, column) {
-          //     console.log("row", row);
-          //     var strAlbum = JSON.stringify(row.album); //变量定义：{000Json字符串}-函数调用：{Json对象转换Json字符串函数}
-          //     //格式器
-
-          //     return `商品：${strAlbum}`;
-          //   }
-          // }
+         
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
@@ -224,6 +216,22 @@ export default {
             label: "商品名称",
             prop: "name",
             type: "input"
+          },
+          {
+            label: "商品分类",
+            prop: "category",
+            type: "select",
+            slot: "slot_form_item_category",
+            options: [
+              {
+                label: "选项1",
+                value: 1
+              },
+              {
+                label: "选项2",
+                value: 2
+              }
+            ]
           },
           {
             label: "商品简介",

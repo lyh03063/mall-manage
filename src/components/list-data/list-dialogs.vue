@@ -6,6 +6,7 @@
       :visible.sync="isShowDialogDetail"
       width="60%"
       :before-close="closeDialogDetailFun"
+       :append-to-body="true"
     >
       <table class="table-normal WP100">
         <tr v-for="item in cf.detailItems" :key="item.prop">
@@ -33,14 +34,17 @@
     <el-dialog
       title="新增数据"
       :visible.sync="isShowDialogAdd"
+      v-if="isShowDialogAdd"
       width="50%"
       :before-close="closeDialogAddFun"
+       :append-to-body="true"
     >
       <dynamicForm
         :formData="formAdd"
         :cf="cfFormAdd"
         @submit="addProduct"
         @cancel="closeDialogAddFun"
+       
       >
         <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
           <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
@@ -55,6 +59,7 @@
       :visible.sync="isShowDialogModify"
       v-if="isShowDialogModify"
       width="60%"
+       :append-to-body="true"
     >
       <dynamicForm
         :formData="formModify"
