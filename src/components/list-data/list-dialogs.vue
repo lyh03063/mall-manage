@@ -11,8 +11,12 @@
         <tr v-for="item in cf.detailItems" :key="item.prop">
           <td class="W100">{{item.label}}</td>
           <td>
+            <!--如果是slot-->
+            <!-- <slot :name="'slot_detail_item_'+item.prop" v-if="item.slot" ></slot> -->
+
+            <slot :name="item.slot" :row="row" v-if="item.slot"></slot>
             <!--如果该字段带有formatter,使用formatter返回的代码输出-->
-            <div v-if="item.formatter" v-html="item.formatter(row)"></div>
+            <div v-else-if="item.formatter" v-html="item.formatter(row)"></div>
             <!--否则如果该字段带type是html，使用html原文输出-->
             <div v-else-if="item.type=='html'" v-html="row[item.prop]"></div>
             <!--否则，正常输出-->
@@ -37,7 +41,12 @@
         :cf="cfFormAdd"
         @submit="addProduct"
         @cancel="closeDialogAddFun"
-      ></dynamicForm>
+      >
+        <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
+          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
+          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
+        </template>
+      </dynamicForm>
     </el-dialog>
 
     <!--修改数据表单弹窗-->
@@ -52,7 +61,12 @@
         :cf="cfFormModify"
         @submit="modifyProduct"
         @cancel="isShowDialogModify = false"
-      ></dynamicForm>
+      >
+        <template v-slot:[item.slot]="{formData}" v-for="item in cf.formItems">
+          <!--根据cf.formItems循环输出插槽--新增修改表单弹窗-->
+          <slot :name="item.slot" :formData="formData" v-if="item.slot"></slot>
+        </template>
+      </dynamicForm>
     </el-dialog>
   </div>
 </template>
