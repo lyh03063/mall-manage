@@ -35,13 +35,18 @@
 
       <!--弹窗表单的description字段插槽组件-->
       <template v-slot:slot_form_item_description="{formData}">
-        <form_item_test class="" v-model="formData.description" ></form_item_test>
+        <form_item_test class v-model="formData.description"></form_item_test>
       </template>
       <!--弹窗表单的category字段插槽组件-->
       <template v-slot:slot_form_item_category="{formData}">
-        <form_item_select_ajax class="" v-model="formData.category" ></form_item_select_ajax>
+        <form_item_select_ajax
+          class
+          v-model="formData.category"
+          keyLabel="nickName"
+          keyValue="userName"
+          ajaxUrl="http://120.76.160.41:3000/crossList?page=mabang-member"
+        ></form_item_select_ajax>
       </template>
-
     </listData>
   </div>
 </template>
@@ -50,7 +55,7 @@ import listData from "../components/list-data/list-data.vue";
 import form_item_test from "../components/form_item_test.vue";
 import form_item_select_ajax from "../components/form_item_select_ajax.vue";
 export default {
-  components: { listData,form_item_test,form_item_select_ajax },
+  components: { listData, form_item_test, form_item_select_ajax },
   methods: {
     showBigImg(url) {
       this.showDialogBigImg = true;
@@ -113,8 +118,6 @@ export default {
             prop: "prop",
             width: 100
           }
-
-         
         ],
         //-------筛选表单字段数组-------
         searchFormItems: [
@@ -222,6 +225,7 @@ export default {
             prop: "category",
             type: "select",
             slot: "slot_form_item_category",
+
             options: [
               {
                 label: "选项1",
