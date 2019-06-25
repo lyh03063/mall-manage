@@ -13,7 +13,9 @@ export default {
   components: { dynamicForm },
   data() {
     return {
-      formData: {},
+      formData: {
+        prop_checkbox:[]//复选框字段的默认数组
+      },
       cfForm: {
         labelWidth: "150px",
         formItems: [
