@@ -6,9 +6,13 @@
       name="name"
       style="border:3px solid red;width:200px;height:100px"
       @input="change"
+      class="FL MR10"
     >
-    <el-button plain @click="fill(1)" size="mini">模板1</el-button>
+    <div class="FL MR10" >
+      <el-button plain @click="fill(1)" size="mini">模板1</el-button>
     <el-button plain @click="fill(2)" size="mini">模板2</el-button>
+    </div>
+    
   </div>
 </template>
 

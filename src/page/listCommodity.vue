@@ -118,22 +118,21 @@ export default {
             type: "input"
           },
           {
-            label: "商品名称",
+            label: "商品名称1",
             prop: "name",
-            type: "input",
-            handle(formData, propOrigin, valHandle) {
-              //处理器
-              formData[propOrigin] = {
-                $regex: valHandle,
-                $options: "i"
-              };
-            }
+            type: "input_find_vague",
+          
           },
           {
-            label: "分类编号",
+            label: "商品分类",
             prop: "category",
-            type: "input"
-          }
+            type: "select",
+            ajax: {
+              url: "http://120.76.160.41:3000/crossList?page=mabang-category",
+              keyLabel: "name",
+              keyValue: "P1"
+            },
+          },
         ],
         //-------详情字段数组-------
         detailItems: [
@@ -209,7 +208,10 @@ export default {
           {
             label: "商品名称",
             prop: "name",
-            type: "input"
+            type: "input",
+             rules: [
+              { required: true, message: "不能为空" },
+            ]
           },
           {
             label: "商品分类",
@@ -255,7 +257,7 @@ export default {
           {
             label: "图片",
             prop: "album",
-            type: "vueJsonEditor"
+            type: "jsonEditor"
           },
           {
             label: "其他数据",

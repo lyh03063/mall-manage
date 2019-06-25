@@ -90,7 +90,7 @@ export default {
       cfFormAdd: {
         formItems: this.cf.formItems,
         btns: [
-          { text: "新增", event: "submit", type: "primary" },
+          { text: "新增", event: "submit", type: "primary", validate: true },
           { text: "取消", event: "cancel" }
         ]
       },
@@ -99,7 +99,7 @@ export default {
         urlInit: this.cf.url.detail,
         formItems: this.cf.formItems,
         btns: [
-          { text: "修改", event: "submit", type: "primary" },
+          { text: "修改", event: "submit", type: "primary", validate: true },
           { text: "取消", event: "cancel" }
         ]
       },
